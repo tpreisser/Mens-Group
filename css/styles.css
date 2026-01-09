@@ -121,7 +121,7 @@ a {
 .week-item:nth-child(12) { animation-delay: 0.65s; }
 
 .week-number {
-  font-size: 0.9rem;
+  font-size: 1.25rem;
   color: var(--text-primary);
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -218,21 +218,14 @@ a {
 
 .week-detail-header {
   text-align: center;
-  padding: 5rem 2rem 3rem;
-}
-
-.week-detail-header h1 {
-  font-size: 4rem;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-  font-weight: 700;
+  padding: 5rem 2rem 2rem;
 }
 
 .week-detail-header .week-number {
-  font-size: 0.75rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  margin-bottom: 3rem;
   text-align: center;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .week-image {
@@ -365,65 +358,25 @@ a {
   font-weight: 600;
 }
 
-/* Questions - Creative Design Without Gold */
+/* Questions - Clean White Design */
 .questions-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: grid;
-  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
 }
 
 .questions-list li {
-  padding: 2rem;
+  padding: 0;
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   line-height: 1.8;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  font-weight: 400;
   position: relative;
-  background: var(--secondary-dark);
-  border-radius: 12px;
-  border-left: 3px solid var(--accent);
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  padding-left: 2.5rem;
-}
-
-.questions-list li::before {
-  content: counter(question-counter, decimal);
-  counter-increment: question-counter;
-  position: absolute;
-  left: -12px;
-  top: 2rem;
-  width: 28px;
-  height: 28px;
-  background: var(--accent);
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.75rem;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  border-radius: 50%;
-  border: 3px solid var(--primary-dark);
-  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
-}
-
-.questions-list li:hover {
-  background: rgba(45, 45, 45, 0.8);
-  color: var(--text-primary);
-  transform: translateX(8px);
-  border-left-color: var(--accent-hover);
-}
-
-.questions-list li:hover::before {
-  transform: scale(1.1);
-  box-shadow: 0 4px 16px rgba(74, 144, 226, 0.5);
-  background: var(--accent-hover);
-}
-
-.questions-list {
-  counter-reset: question-counter;
+  padding-left: 0;
 }
 
 /* Animations */
