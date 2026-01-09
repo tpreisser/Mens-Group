@@ -1,7 +1,7 @@
 // Service Worker for Same Battles PWA
 // Enables offline functionality and caching
 
-const CACHE_NAME = 'same-battles-v1';
+const CACHE_NAME = 'same-battles-v2';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -43,7 +43,8 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
+          // Delete all old same-battles caches
+          if (cacheName.startsWith('same-battles-') && !cacheName.startsWith('same-battles-v2-')) {
             return caches.delete(cacheName);
           }
         })
@@ -53,34 +54,64 @@ self.addEventListener('activate', (event) => {
   return self.clients.claim();
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - network first for HTML, cache first for assets
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request).then((response) => {
-          // Don't cache audio files on first load (they're large)
-          if (event.request.url.includes('/assets/audio/')) {
-            return response;
-          }
-          
-          // Cache successful responses
+  // Network first strategy for HTML pages to always get fresh content
+  if (event.request.destination === 'document' || event.request.url.includes('.html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          // Cache successful HTML responses for offline
           if (response.status === 200) {
             const responseToCache = response.clone();
             caches.open(CACHE_NAME).then((cache) => {
               cache.put(event.request, responseToCache);
             });
           }
-          
           return response;
-        });
-      })
-      .catch(() => {
-        // If both cache and network fail, return offline page
-        if (event.request.destination === 'document') {
-          return caches.match('/index.html');
-        }
-      })
-  );
+        })
+        .catch(() => {
+          // Fallback to cache if network fails
+          return caches.match(event.request).then((cached) => {
+            if (cached) {
+              return cached;
+            }
+            // If cache also fails and it's a document request, return index
+            if (event.request.destination === 'document') {
+              return caches.match('/index.html');
+            }
+          });
+        })
+    );
+  } else {
+    // Cache first for assets (images, CSS, JS)
+    event.respondWith(
+      caches.match(event.request)
+        .then((response) => {
+          // Return cached version or fetch from network
+          return response || fetch(event.request).then((response) => {
+            // Don't cache audio files (they're large)
+            if (event.request.url.includes('/assets/audio/')) {
+              return response;
+            }
+            
+            // Cache successful responses
+            if (response.status === 200) {
+              const responseToCache = response.clone();
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+            }
+            
+            return response;
+          });
+        })
+        .catch(() => {
+          // If both cache and network fail, return offline page for documents
+          if (event.request.destination === 'document') {
+            return caches.match('/index.html');
+          }
+        })
+    );
+  }
 });

@@ -357,6 +357,10 @@ function initLazyLoading() {
 
 // Smooth page transition
 function createSmoothTransition(link, href) {
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:359',message:'createSmoothTransition called',data:{href:href,linkText:link.textContent},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,C'})}).catch(()=>{});
+  // #endregion
+  
   // Create transition overlay if it doesn't exist
   let transition = document.getElementById('page-transition');
   if (!transition) {
@@ -369,31 +373,56 @@ function createSmoothTransition(link, href) {
   const centerX = rect.left + rect.width / 2;
   const centerY = rect.top + rect.height / 2;
   
-  // Set origin point for smooth expansion
+  // Set origin point for smooth expansion (center of clicked card)
   transition.style.transformOrigin = `${centerX}px ${centerY}px`;
   transition.style.left = '0';
   transition.style.top = '0';
+  transition.style.width = '100%';
+  transition.style.height = '100%';
   transition.style.opacity = '0';
   transition.style.transform = 'scale(0)';
+  transition.style.display = 'block';
   
-  // Force reflow to ensure initial state
-  transition.offsetHeight;
+  // Remove active class if present from previous transition
+  transition.classList.remove('active');
   
-  // Activate transition with smooth animation
+  // Force reflow to ensure initial state is applied
+  void transition.offsetHeight;
+  
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:383',message:'Transition element ready',data:{transitionId:transition.id,hasActive:transition.classList.contains('active'),opacity:transition.style.opacity},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+  // #endregion
+  
+  // Activate transition with smooth animation (use double RAF for better timing)
   requestAnimationFrame(() => {
-    transition.classList.add('active');
+    requestAnimationFrame(() => {
+      transition.classList.add('active');
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:390',message:'Transition active class added',data:{hasActive:transition.classList.contains('active')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+      // #endregion
+    });
   });
   
   // Navigate after animation completes
   setTimeout(() => {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:389',message:'Navigating to week page',data:{href:href},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
     window.location.href = href;
   }, 500);
 }
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:394',message:'DOMContentLoaded fired',data:{pathname:window.location.pathname,isWeekPage:window.location.pathname.includes('/weeks/')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,E'})}).catch(()=>{});
+  // #endregion
+  
   // Initialize audio players
   const audioContainers = document.querySelectorAll('.audio-player-container');
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:397',message:'Audio containers found',data:{count:audioContainers.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,E'})}).catch(()=>{});
+  // #endregion
   audioContainers.forEach(container => {
     new AudioPlayer(container);
   });
@@ -403,8 +432,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Smooth click animations for week cards
   const weekCards = document.querySelectorAll('.week-card');
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:405',message:'Week cards found',data:{count:weekCards.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+  // #endregion
   weekCards.forEach(card => {
     card.addEventListener('click', function(e) {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:408',message:'Week card clicked',data:{href:this.getAttribute('href')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,C'})}).catch(()=>{});
+      // #endregion
       e.preventDefault();
       const href = this.getAttribute('href');
       
@@ -444,9 +479,15 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then(registration => {
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:446',message:'ServiceWorker registered',data:{scope:registration.scope,active:!!registration.active},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+        // #endregion
         console.log('ServiceWorker registered:', registration);
       })
       .catch(error => {
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:450',message:'ServiceWorker registration failed',data:{error:error.message},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+        // #endregion
         console.log('ServiceWorker registration failed:', error);
       });
   });
