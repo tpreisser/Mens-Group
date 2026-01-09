@@ -1,11 +1,10 @@
 /* Same Battles - Apple-Inspired Premium Design */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap');
-
 :root {
   --primary-dark: #1a1a1a;
   --secondary-dark: #2d2d2d;
-  --accent: #c9a227;
+  --accent: #4a90e2;
+  --accent-hover: #5ba0f2;
   --text-primary: #f5f5f5;
   --text-secondary: #a0a0a0;
   --text-muted: #6b6b6b;
@@ -36,15 +35,16 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 600;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 h1 {
   font-size: 3.5rem;
   margin-bottom: 0.5rem;
+  font-weight: 700;
 }
 
 h2 {
@@ -224,15 +224,15 @@ a {
 .week-detail-header h1 {
   font-size: 4rem;
   margin-bottom: 0.5rem;
-  background: linear-gradient(180deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
+  font-weight: 700;
 }
 
 .week-detail-header .week-number {
   font-size: 0.75rem;
   margin-bottom: 1.5rem;
+  text-align: center;
+  color: var(--text-secondary);
 }
 
 .week-image {
@@ -280,7 +280,7 @@ a {
   height: 64px;
   background: var(--accent);
   border: none;
-  color: var(--primary-dark);
+  color: var(--text-primary);
   font-size: 1.2rem;
   cursor: pointer;
   display: flex;
@@ -290,13 +290,13 @@ a {
   flex-shrink: 0;
   font-weight: 600;
   border-radius: 50%;
-  box-shadow: 0 4px 20px rgba(201, 162, 39, 0.3);
+  box-shadow: 0 4px 20px rgba(74, 144, 226, 0.3);
 }
 
 .play-button:hover {
-  background: #d4b030;
+  background: var(--accent-hover);
   transform: scale(1.1);
-  box-shadow: 0 6px 30px rgba(201, 162, 39, 0.5);
+  box-shadow: 0 6px 30px rgba(74, 144, 226, 0.5);
 }
 
 .progress-container {
@@ -365,56 +365,65 @@ a {
   font-weight: 600;
 }
 
-/* Questions */
+/* Questions - Creative Design Without Gold */
 .questions-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  counter-reset: question-counter;
+  display: grid;
+  gap: 1.5rem;
 }
 
 .questions-list li {
-  padding: 2.5rem 0 2.5rem 3.5rem;
+  padding: 2rem;
   margin: 0;
   font-size: 1.1rem;
   line-height: 1.8;
   color: var(--text-secondary);
   position: relative;
-  counter-increment: question-counter;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: 12px;
-  margin-bottom: 1rem;
-}
-
-.questions-list li:hover {
   background: var(--secondary-dark);
-  color: var(--text-primary);
-  transform: translateX(8px);
-  padding-left: 4rem;
+  border-radius: 12px;
+  border-left: 3px solid var(--accent);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  padding-left: 2.5rem;
 }
 
 .questions-list li::before {
-  content: counter(question-counter);
+  content: counter(question-counter, decimal);
+  counter-increment: question-counter;
   position: absolute;
-  left: 0;
-  top: 2.5rem;
-  width: 32px;
-  height: 32px;
+  left: -12px;
+  top: 2rem;
+  width: 28px;
+  height: 28px;
   background: var(--accent);
-  color: var(--primary-dark);
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   border-radius: 50%;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: 3px solid var(--primary-dark);
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+.questions-list li:hover {
+  background: rgba(45, 45, 45, 0.8);
+  color: var(--text-primary);
+  transform: translateX(8px);
+  border-left-color: var(--accent-hover);
 }
 
 .questions-list li:hover::before {
-  transform: scale(1.2);
-  box-shadow: 0 4px 20px rgba(201, 162, 39, 0.4);
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(74, 144, 226, 0.5);
+  background: var(--accent-hover);
+}
+
+.questions-list {
+  counter-reset: question-counter;
 }
 
 /* Animations */
