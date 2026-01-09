@@ -197,18 +197,21 @@ class AudioPlayer {
     
     // Set audio attributes for better mobile support
     this.audio.setAttribute('playsinline', 'true');
+    this.audio.setAttribute('webkit-playsinline', 'true');
     this.audio.setAttribute('controls', 'false');
 
-    // Touch events for mobile
-    let touchStartX = 0;
-    this.progressBar.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-    });
-    this.progressBar.addEventListener('touchend', (e) => {
-      if (Math.abs(e.changedTouches[0].clientX - touchStartX) < 10) {
-        this.seek(e);
-      }
-    });
+    // Touch events for mobile progress bar
+    if (this.progressBar) {
+      let touchStartX = 0;
+      this.progressBar.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+      });
+      this.progressBar.addEventListener('touchend', (e) => {
+        if (Math.abs(e.changedTouches[0].clientX - touchStartX) < 10) {
+          this.seek(e);
+        }
+      });
+    }
   }
 
   togglePlay() {
