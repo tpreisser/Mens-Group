@@ -3,8 +3,8 @@
 :root {
   --primary-dark: #1a1a1a;
   --secondary-dark: #2d2d2d;
-  --accent: #4a90e2;
-  --accent-hover: #5ba0f2;
+  --accent: #c9a227;
+  --accent-hover: #d4b030;
   --text-primary: #f5f5f5;
   --text-secondary: #a0a0a0;
   --text-muted: #6b6b6b;
@@ -205,7 +205,7 @@ a {
 }
 
 .back-button:hover {
-  color: var(--accent);
+  color: var(--text-primary);
   transform: translateX(-4px);
 }
 
@@ -345,28 +345,44 @@ a {
 
 /* Reading */
 .reading-content {
-  padding: 2.5rem;
-  background: var(--secondary-dark);
-  border-radius: 16px;
+  padding: 3rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
   margin: 0;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
 }
 
-.reading-content:hover {
-  background: rgba(45, 45, 45, 0.8);
-  transform: translateY(-2px);
+.reading-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.02);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.reading-content:hover::before {
+  opacity: 1;
 }
 
 .reading-content p {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   color: var(--text-primary);
-  line-height: 1.8;
+  line-height: 1.9;
   margin: 0;
   font-weight: 400;
+  letter-spacing: -0.01em;
+  position: relative;
+  z-index: 1;
 }
 
 .reading-content strong {
-  color: var(--accent);
+  color: var(--text-primary);
   font-weight: 600;
 }
 
