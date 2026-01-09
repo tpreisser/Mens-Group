@@ -131,6 +131,27 @@ function initLazyLoading() {
   }
 }
 
+// Physics-based page transition
+function createPhysicsTransition(link, href) {
+  const transition = document.getElementById('page-transition');
+  const rect = link.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  
+  // Set origin point
+  transition.style.transformOrigin = `${centerX}px ${centerY}px`;
+  transition.style.left = '0';
+  transition.style.top = '0';
+  
+  // Activate transition with physics-based animation
+  transition.classList.add('active');
+  
+  // Navigate after animation
+  setTimeout(() => {
+    window.location.href = href;
+  }, 400);
+}
+
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize audio players
@@ -141,6 +162,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize lazy loading
   initLazyLoading();
+
+  // Physics-based click animations for week cards
+  const weekCards = document.querySelectorAll('.week-card');
+  weekCards.forEach(card => {
+    card.addEventListener('click', function(e) {
+      e.preventDefault();
+      const href = this.getAttribute('href');
+      
+      // Add click animation to card
+      this.style.transform = 'scale(0.95)';
+      this.style.transition = 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      
+      setTimeout(() => {
+        createPhysicsTransition(this, href);
+      }, 100);
+    });
+  });
 
   // Smooth scroll for anchor links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
