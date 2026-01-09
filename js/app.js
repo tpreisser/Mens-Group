@@ -67,7 +67,18 @@ class AudioPlayer {
     if (this.timeDisplay && this.audio.duration) {
       const current = this.formatTime(this.audio.currentTime);
       const total = this.formatTime(this.audio.duration);
-      this.timeDisplay.textContent = `${current} / ${total}`;
+      
+      // Handle separate left and right time displays
+      const timeDisplays = this.container.querySelectorAll('.time-display');
+      if (timeDisplays.length >= 2) {
+        const leftDisplay = this.container.querySelector('.time-display.left');
+        const rightDisplay = this.container.querySelector('.time-display.right');
+        if (leftDisplay) leftDisplay.textContent = current;
+        if (rightDisplay) rightDisplay.textContent = total;
+      } else {
+        // Fallback for single time display
+        this.timeDisplay.textContent = `${current} / ${total}`;
+      }
     }
   }
 
