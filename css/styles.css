@@ -1,15 +1,15 @@
-/* Same Battles - Apple Store Inspired Design */
+/* Same Battles - Apple-Inspired Premium Design */
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap');
 
 :root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f5f5f7;
+  --primary-dark: #1a1a1a;
+  --secondary-dark: #2d2d2d;
   --accent: #c9a227;
-  --text-primary: #1d1d1f;
-  --text-secondary: #6e6e73;
-  --text-muted: #86868b;
-  --border: #d2d2d7;
+  --text-primary: #f5f5f5;
+  --text-secondary: #a0a0a0;
+  --text-muted: #6b6b6b;
+  --border: #3d3d3d;
 }
 
 * {
@@ -27,7 +27,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 400;
   line-height: 1.47059;
-  background: var(--bg-primary);
+  background: var(--primary-dark);
   color: var(--text-primary);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -72,16 +72,16 @@ a {
 /* Header - Logo Only */
 .header {
   text-align: center;
-  padding: 2.5rem 2rem 3rem;
+  padding: 3rem 2rem 4rem;
   position: relative;
 }
 
 .logo {
-  max-width: 220px;
+  max-width: 240px;
   height: auto;
   margin: 0 auto;
   display: block;
-  opacity: 0;
+  opacity: 1;
   animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
 }
 
@@ -92,7 +92,7 @@ a {
   padding: 0 2rem;
 }
 
-/* Weeks Grid - Apple Style */
+/* Weeks Grid - Apple Style Complex Layout */
 .weeks-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -111,9 +111,8 @@ a {
   transform: translateY(30px);
   animation: cardFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   border-radius: 18px;
-  background: var(--bg-secondary);
+  background: var(--secondary-dark);
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .week-card:nth-child(1) { animation-delay: 0.1s; }
@@ -129,6 +128,19 @@ a {
 .week-card:nth-child(11) { animation-delay: 0.6s; }
 .week-card:nth-child(12) { animation-delay: 0.65s; }
 
+.week-number {
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  opacity: 0.95;
+  text-align: left;
+  padding: 0 0.5rem;
+}
+
 .week-card::before {
   content: '';
   position: absolute;
@@ -136,23 +148,23 @@ a {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 100%);
-  z-index: 1;
-  opacity: 0;
-  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: rgba(26, 26, 26, 0);
+  z-index: 2;
+  transition: background 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
 }
 
 .week-card:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .week-card:hover::before {
-  opacity: 1;
+  background: rgba(26, 26, 26, 0.95);
 }
 
 .week-card:hover .week-card-image {
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 
 .week-card-image {
@@ -173,32 +185,14 @@ a {
   left: 0;
   right: 0;
   padding: 2rem;
-  z-index: 2;
+  z-index: 3;
   transform: translateY(0);
   transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
 }
 
 .week-card:hover .week-card-content {
   transform: translateY(-4px);
-}
-
-.week-number {
-  font-size: 0.7rem;
-  color: var(--accent);
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  opacity: 0.95;
-}
-
-.week-card h3 {
-  font-size: 1.75rem;
-  margin: 0;
-  color: var(--text-primary);
-  line-height: 1.2;
-  font-weight: 600;
 }
 
 /* Week Detail Page */
@@ -209,11 +203,11 @@ a {
   padding: 1.5rem 2rem;
   position: sticky;
   top: 0;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(26, 26, 26, 0.8);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   z-index: 100;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .back-button {
@@ -248,7 +242,10 @@ a {
 .week-detail-header h1 {
   font-size: 4rem;
   margin-bottom: 0.5rem;
-  color: var(--text-primary);
+  background: linear-gradient(180deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .week-detail-header .week-number {
@@ -265,7 +262,7 @@ a {
   margin: 0 auto 5rem;
   display: block;
   border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
 /* Sections */
@@ -286,16 +283,14 @@ a {
   align-items: center;
   gap: 1.5rem;
   padding: 2rem;
-  background: var(--bg-secondary);
+  background: var(--secondary-dark);
   border-radius: 16px;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border: 1px solid var(--border);
 }
 
 .audio-player-container:hover .audio-controls {
-  background: #fafafa;
+  background: rgba(45, 45, 45, 0.8);
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .play-button {
@@ -303,7 +298,7 @@ a {
   height: 64px;
   background: var(--accent);
   border: none;
-  color: var(--text-primary);
+  color: var(--primary-dark);
   font-size: 1.2rem;
   cursor: pointer;
   display: flex;
@@ -332,7 +327,7 @@ a {
 .progress-bar {
   flex: 1;
   height: 4px;
-  background: var(--border);
+  background: rgba(255, 255, 255, 0.1);
   position: relative;
   cursor: pointer;
   min-height: 44px;
@@ -364,17 +359,15 @@ a {
 /* Reading */
 .reading-content {
   padding: 2.5rem;
-  background: var(--bg-secondary);
+  background: var(--secondary-dark);
   border-radius: 16px;
   margin: 0;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border: 1px solid var(--border);
 }
 
 .reading-content:hover {
-  background: #fafafa;
+  background: rgba(45, 45, 45, 0.8);
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .reading-content p {
@@ -412,7 +405,7 @@ a {
 }
 
 .questions-list li:hover {
-  background: var(--bg-secondary);
+  background: var(--secondary-dark);
   color: var(--text-primary);
   transform: translateX(8px);
   padding-left: 4rem;
@@ -426,7 +419,7 @@ a {
   width: 32px;
   height: 32px;
   background: var(--accent);
-  color: var(--text-primary);
+  color: var(--primary-dark);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -475,7 +468,7 @@ a {
 
 @media (max-width: 768px) {
   .header {
-    padding: 2rem 1.5rem 2.5rem;
+    padding: 2rem 1.5rem 3rem;
   }
 
   .logo {
