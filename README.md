@@ -69,10 +69,14 @@ same-battles/
    - Open `http://localhost:8000` in your browser
 
 3. **Deploy to GitHub Pages**
-   - Push the repository to GitHub
-   - Go to Settings > Pages
-   - Select the branch and folder (usually `main` and `/root`)
-   - The site will be available at `https://yourusername.github.io/same-battles/`
+   - Repository is already pushed to GitHub: `tpreisser/Mens-Group`
+   - Go to GitHub repository: https://github.com/tpreisser/Mens-Group
+   - Navigate to Settings > Pages
+   - Under "Source", select "Deploy from a branch"
+   - Select branch: `main`
+   - Select folder: `/ (root)` or `/same-battles` (depending on structure)
+   - Click Save
+   - The site will be available at: `https://tpreisser.github.io/Mens-Group/` (or with /same-battles if that's the root folder)
 
 ## Design System
 
