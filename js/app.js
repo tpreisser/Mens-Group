@@ -215,7 +215,28 @@ class AudioPlayer {
     if (this.isPlaying) {
       this.audio.pause();
     } else {
-      this.audio.play();
+      // Ensure metadata is set before playing for lock screen
+      this.updateMetadata();
+      this.audio.play().catch(e => {
+        console.log('Play error:', e);
+      });
+    }
+  }
+
+  updateMetadata() {
+    if ('mediaSession' in navigator) {
+      // Refresh metadata in case image loaded after page load
+      this.metadata = this.getMetadata();
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: this.metadata.title,
+          artist: this.metadata.artist,
+          album: this.metadata.album,
+          artwork: this.metadata.artwork
+        });
+      } catch (e) {
+        console.log('Media Session metadata update error:', e);
+      }
     }
   }
 
