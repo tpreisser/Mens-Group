@@ -1,7 +1,7 @@
 // Same Battles - Men's Bible Study Web App
 // Main JavaScript functionality
 
-// Audio Player
+// Audio Player with Media Session API for Lock Screen
 class AudioPlayer {
   constructor(container) {
     this.container = container;
@@ -12,7 +12,90 @@ class AudioPlayer {
     this.timeDisplay = container.querySelector('.time-display');
     this.isPlaying = false;
     
+    // Get metadata from page
+    this.metadata = this.getMetadata();
+    
     this.init();
+    this.setupMediaSession();
+  }
+
+  getMetadata() {
+    // Extract week number from page title or URL
+    const titleMatch = document.title.match(/Week (\d+):\s*(.+?)\s*-/);
+    const weekNumber = titleMatch ? titleMatch[1] : '1';
+    const weekTitle = titleMatch ? titleMatch[2].trim() : 'Same Battles';
+    
+    // Get image path from week image on page
+    const weekImage = document.querySelector('.week-image');
+    const artworkUrl = weekImage ? weekImage.src : `/assets/images/${weekNumber}.png`;
+    
+    // Get audio filename to extract title
+    const audioSrc = this.audio ? this.audio.src : '';
+    const audioFileName = audioSrc.split('/').pop().replace('.m4a', '').replace(/_/g, ' ');
+    
+    return {
+      title: audioFileName || weekTitle,
+      artist: 'Same Battles',
+      album: `Week ${weekNumber}: ${weekTitle}`,
+      artwork: [
+        { src: artworkUrl, sizes: '512x512', type: 'image/png' },
+        { src: artworkUrl, sizes: '1024x1024', type: 'image/png' }
+      ]
+    };
+  }
+
+  setupMediaSession() {
+    if ('mediaSession' in navigator) {
+      // Set initial metadata
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: this.metadata.title,
+        artist: this.metadata.artist,
+        album: this.metadata.album,
+        artwork: this.metadata.artwork
+      });
+
+      // Handle play/pause from lock screen
+      navigator.mediaSession.setActionHandler('play', () => {
+        this.audio.play();
+      });
+
+      navigator.mediaSession.setActionHandler('pause', () => {
+        this.audio.pause();
+      });
+
+      // Handle seek from lock screen
+      navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+        const skipTime = details.seekOffset || 10;
+        this.audio.currentTime = Math.max(0, this.audio.currentTime - skipTime);
+      });
+
+      navigator.mediaSession.setActionHandler('seekforward', (details) => {
+        const skipTime = details.seekOffset || 10;
+        this.audio.currentTime = Math.min(this.audio.duration, this.audio.currentTime + skipTime);
+      });
+
+      // Handle seekto from lock screen (scrubbing)
+      navigator.mediaSession.setActionHandler('seekto', (details) => {
+        if (details.seekTime !== null) {
+          this.audio.currentTime = details.seekTime;
+        }
+      });
+
+      // Update position state for lock screen
+      this.updatePositionState();
+    }
+  }
+
+  updatePositionState() {
+    if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
+      if (this.audio.duration) {
+        navigator.mediaSession.setPositionState({
+          duration: this.audio.duration,
+          playbackRate: this.audio.playbackRate,
+          position: this.audio.currentTime
+        });
+      }
+    }
   }
 
   init() {
@@ -60,6 +143,11 @@ class AudioPlayer {
       const percentage = (this.audio.currentTime / this.audio.duration) * 100;
       this.progressFill.style.width = percentage + '%';
       this.updateTime();
+      
+      // Update position state every second for lock screen scrubbing
+      if (this.isPlaying && Math.floor(this.audio.currentTime) % 1 === 0) {
+        this.updatePositionState();
+      }
     }
   }
 
@@ -93,12 +181,24 @@ class AudioPlayer {
     this.isPlaying = true;
     this.playButton.innerHTML = '⏸';
     this.playButton.setAttribute('aria-label', 'Pause');
+    
+    // Update media session for lock screen
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = 'playing';
+      this.updatePositionState();
+    }
   }
 
   onPause() {
     this.isPlaying = false;
     this.playButton.innerHTML = '▶';
     this.playButton.setAttribute('aria-label', 'Play');
+    
+    // Update media session for lock screen
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = 'paused';
+      this.updatePositionState();
+    }
   }
 
   onEnded() {
