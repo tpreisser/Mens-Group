@@ -563,6 +563,17 @@ a {
     padding: 3rem 0;
   }
 
+  .audio-controls {
+    padding: 3rem 2rem 3.5rem;
+    gap: 2rem;
+  }
+
+  .play-button {
+    width: 72px;
+    height: 72px;
+    font-size: 1.4rem;
+  }
+
   .week-header {
     padding: 1.25rem 1.5rem;
   }
