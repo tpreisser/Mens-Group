@@ -25,38 +25,92 @@ class AudioPlayer {
     const weekNumber = titleMatch ? titleMatch[1] : '1';
     const weekTitle = titleMatch ? titleMatch[2].trim() : 'Same Battles';
     
-    // Get image path from week image on page
+    // Get image path from week image on page - use absolute URL for lock screen
     const weekImage = document.querySelector('.week-image');
-    const artworkUrl = weekImage ? weekImage.src : `/assets/images/${weekNumber}.png`;
+    let artworkUrl = weekImage ? weekImage.src : `/assets/images/${weekNumber}.png`;
     
-    // Get audio filename to extract title
+    // Convert relative URL to absolute URL for lock screen
+    if (artworkUrl.startsWith('/')) {
+      artworkUrl = window.location.origin + artworkUrl;
+    } else if (!artworkUrl.startsWith('http')) {
+      artworkUrl = window.location.origin + '/' + artworkUrl;
+    }
+    
+    // Get audio filename and convert to readable title
     const audioSrc = this.audio ? this.audio.src : '';
-    const audioFileName = audioSrc.split('/').pop().replace('.m4a', '').replace(/_/g, ' ');
+    const audioFileName = audioSrc.split('/').pop().replace('.m4a', '');
+    
+    // Convert audio filename to readable title
+    const audioTitle = this.formatAudioTitle(audioFileName);
     
     return {
-      title: audioFileName || weekTitle,
-      artist: 'Same Battles',
+      title: audioTitle || weekTitle,
+      artist: 'Same Battles - Men\'s Bible Study',
       album: `Week ${weekNumber}: ${weekTitle}`,
       artwork: [
         { src: artworkUrl, sizes: '512x512', type: 'image/png' },
-        { src: artworkUrl, sizes: '1024x1024', type: 'image/png' }
+        { src: artworkUrl, sizes: '1024x1024', type: 'image/png' },
+        { src: artworkUrl, sizes: '256x256', type: 'image/png' }
       ]
     };
   }
 
+  formatAudioTitle(filename) {
+    // Convert underscore-separated filename to readable title
+    const titles = {
+      'Elijah_s_Post-Victory_Crash_and_Burnout': 'Elijah\'s Post-Victory Crash and Burnout',
+      'Facing_Jacob_to_Become_Israel': 'Facing Jacob to Become Israel',
+      'The_Powerful_General_Who_Refused_Simple_Cure': 'The Powerful General Who Refused Simple Cure',
+      'The_Cost_of_Always_Doing_Right': 'The Cost of Always Doing Right',
+      'I_Am_Doing_A_Great_Work': 'I Am Doing A Great Work',
+      'Jonathan_Gives_Up_the_Crown_For_David': 'Jonathan Gives Up the Crown For David',
+      'Jonah_s_Anger_Over_a_Plant': 'Jonah\'s Anger Over a Plant',
+      'The_Whisper_Did_Not_Break_Elijah_s_Script': 'The Whisper Did Not Break Elijah\'s Script',
+      'Joseph_s_Thirteen_Years_of_Silent_Preparation': 'Joseph\'s Thirteen Years of Silent Preparation',
+      'David_s_Radical_Restraint_in_the_Cave': 'David\'s Radical Restraint in the Cave',
+      'Why_King_Solomon_Called_Success_Vapor': 'Why King Solomon Called Success Vapor',
+      'Moses\'s_Five_Objections_to_Leadership': 'Moses\'s Five Objections to Leadership'
+    };
+    
+    if (titles[filename]) {
+      return titles[filename];
+    }
+    
+    // Fallback: replace underscores with spaces and capitalize
+    return filename.replace(/_/g, ' ')
+                   .replace(/\s+/g, ' ')
+                   .replace(/\b\w/g, char => char.toUpperCase())
+                   .replace(/ s /g, '\'s ');
+  }
+
   setupMediaSession() {
-    if ('mediaSession' in navigator) {
+    if ('mediaSession' in navigator && this.audio) {
+      // Update metadata when audio loads
+      const updateMetadata = () => {
+        try {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: this.metadata.title,
+            artist: this.metadata.artist,
+            album: this.metadata.album,
+            artwork: this.metadata.artwork
+          });
+        } catch (e) {
+          console.log('Media Session metadata update:', e);
+        }
+      };
+
       // Set initial metadata
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: this.metadata.title,
-        artist: this.metadata.artist,
-        album: this.metadata.album,
-        artwork: this.metadata.artwork
+      updateMetadata();
+
+      // Update metadata when audio is loaded
+      this.audio.addEventListener('loadedmetadata', () => {
+        this.metadata = this.getMetadata();
+        updateMetadata();
       });
 
       // Handle play/pause from lock screen
       navigator.mediaSession.setActionHandler('play', () => {
-        this.audio.play();
+        this.audio.play().catch(e => console.log('Play error:', e));
       });
 
       navigator.mediaSession.setActionHandler('pause', () => {
@@ -67,22 +121,35 @@ class AudioPlayer {
       navigator.mediaSession.setActionHandler('seekbackward', (details) => {
         const skipTime = details.seekOffset || 10;
         this.audio.currentTime = Math.max(0, this.audio.currentTime - skipTime);
+        this.updatePositionState();
       });
 
       navigator.mediaSession.setActionHandler('seekforward', (details) => {
         const skipTime = details.seekOffset || 10;
         this.audio.currentTime = Math.min(this.audio.duration, this.audio.currentTime + skipTime);
+        this.updatePositionState();
       });
 
       // Handle seekto from lock screen (scrubbing)
       navigator.mediaSession.setActionHandler('seekto', (details) => {
-        if (details.seekTime !== null) {
+        if (details.seekTime !== null && !isNaN(details.seekTime)) {
           this.audio.currentTime = details.seekTime;
+          this.updatePositionState();
         }
       });
 
-      // Update position state for lock screen
-      this.updatePositionState();
+      // Prevent default action handlers if not available
+      try {
+        navigator.mediaSession.setActionHandler('previoustrack', null);
+        navigator.mediaSession.setActionHandler('nexttrack', null);
+      } catch (e) {
+        // Some actions may not be supported
+      }
+
+      // Update position state when audio metadata loads
+      this.audio.addEventListener('loadedmetadata', () => {
+        this.updatePositionState();
+      });
     }
   }
 
@@ -103,12 +170,34 @@ class AudioPlayer {
 
     // Event listeners
     this.playButton.addEventListener('click', () => this.togglePlay());
-    this.progressBar.addEventListener('click', (e) => this.seek(e));
-    this.audio.addEventListener('loadedmetadata', () => this.updateTime());
+    if (this.progressBar) {
+      this.progressBar.addEventListener('click', (e) => this.seek(e));
+    }
+    this.audio.addEventListener('loadedmetadata', () => {
+      this.updateTime();
+      // Update metadata after audio loads
+      if ('mediaSession' in navigator) {
+        this.metadata = this.getMetadata();
+        try {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: this.metadata.title,
+            artist: this.metadata.artist,
+            album: this.metadata.album,
+            artwork: this.metadata.artwork
+          });
+        } catch (e) {
+          console.log('Media Session error:', e);
+        }
+      }
+    });
     this.audio.addEventListener('timeupdate', () => this.updateProgress());
     this.audio.addEventListener('ended', () => this.onEnded());
     this.audio.addEventListener('play', () => this.onPlay());
     this.audio.addEventListener('pause', () => this.onPause());
+    
+    // Set audio attributes for better mobile support
+    this.audio.setAttribute('playsinline', 'true');
+    this.audio.setAttribute('controls', 'false');
 
     // Touch events for mobile
     let touchStartX = 0;
