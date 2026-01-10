@@ -330,13 +330,14 @@ a {
 }
 
 .week-detail-header .week-number {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   margin-bottom: 4rem;
   text-align: center;
   color: var(--text-primary);
   opacity: 1;
   font-weight: 600;
   letter-spacing: 0.08em;
+  display: block;
 }
 
 .week-image {
