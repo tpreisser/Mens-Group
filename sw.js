@@ -11,14 +11,14 @@ const getBasePath = () => {
 };
 
 const BASE_PATH = getBasePath();
-const CACHE_NAME = 'same-battles-v3';
+const CACHE_NAME = 'same-battles-v4-webp';
 const urlsToCache = [
   BASE_PATH,
   BASE_PATH + 'index.html',
   BASE_PATH + 'css/styles.css',
   BASE_PATH + 'js/app.js',
   BASE_PATH + 'manifest.json',
-  BASE_PATH + 'assets/logo/same-battles-logo.png',
+  BASE_PATH + 'assets/logo/same-battles-logo.webp',
   BASE_PATH + 'weeks/week-01.html',
   BASE_PATH + 'weeks/week-02.html',
   BASE_PATH + 'weeks/week-03.html',

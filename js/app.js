@@ -27,7 +27,7 @@ class AudioPlayer {
     
     // Get image path from week image on page - use absolute URL for lock screen
     const weekImage = document.querySelector('.week-image');
-    let artworkUrl = weekImage ? weekImage.src : `/assets/images/${weekNumber}.png`;
+    let artworkUrl = weekImage ? weekImage.src : `/assets/images/${weekNumber}.webp`;
     
     // Convert relative URL to absolute URL for lock screen
     if (artworkUrl.startsWith('/')) {
