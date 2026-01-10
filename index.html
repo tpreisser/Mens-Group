@@ -2,26 +2,27 @@
 <html lang="en">
 <head>
   <script>
-    // Fix paths for GitHub Pages - MUST BE FIRST
+    // Fix paths for GitHub Pages - MUST BE FIRST - Write base and CSS immediately
+    // #region agent log
+    (function(){try{var bp=window.location.pathname.includes('/Mens-Group/')?'/Mens-Group/':'/';window.BASE_PATH=bp;fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:basePathSet',message:'Base path determined',data:{basePath:bp,pathname:window.location.pathname},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});}catch(e){}}());
+    // #endregion
     (function() {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:basePathDetection',message:'Detecting base path',data:{pathname:window.location.pathname,origin:window.location.origin},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-      // #endregion
       var path = window.location.pathname;
       var basePath = path.includes('/Mens-Group/') ? '/Mens-Group/' : '/';
       window.BASE_PATH = basePath;
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:basePathSet',message:'Base path determined',data:{basePath:basePath},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-      // #endregion
-      document.write('<base href="' + basePath + '">');
+      
+      // Write base tag first
+      document.write('<base href="' + basePath + '">\n');
+      
+      // Write CSS link with absolute path immediately
+      document.write('<link rel="stylesheet" href="' + basePath + 'css/styles.css">\n');
+      document.write('<link rel="manifest" href="' + basePath + 'manifest.json">\n');
     })();
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Same Battles - A 12-week men's Bible study">
   <meta name="theme-color" content="#c9a227">
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="css/styles.css">
   <title>Same Battles - Men's Bible Study</title>
 </head>
 <body>
