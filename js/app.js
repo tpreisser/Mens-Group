@@ -520,14 +520,23 @@ document.addEventListener('DOMContentLoaded', () => {
 // Service Worker Registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    // Register service worker with correct path
-    var swPath = (window.BASE_PATH || '/') + 'sw.js';
-    navigator.serviceWorker.register(swPath)
-      .then(registration => {
-        console.log('ServiceWorker registered:', registration);
-      })
-      .catch(error => {
-        console.log('ServiceWorker registration failed:', error);
-      });
+    // Unregister all existing service workers first to clear cache
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for(let registration of registrations) {
+        registration.unregister();
+      }
+    }).then(() => {
+      // Register service worker with correct path
+      var swPath = (window.BASE_PATH || '/') + 'sw.js?v=' + Date.now();
+      navigator.serviceWorker.register(swPath)
+        .then(registration => {
+          console.log('ServiceWorker registered:', registration);
+          // Force update
+          registration.update();
+        })
+        .catch(error => {
+          console.log('ServiceWorker registration failed:', error);
+        });
+    });
   });
 }

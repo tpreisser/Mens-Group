@@ -77,7 +77,7 @@ self.addEventListener('fetch', (event) => {
   // Network first strategy for HTML pages to always get fresh content
   if (event.request.destination === 'document' || event.request.url.includes('.html')) {
     event.respondWith(
-      fetch(event.request)
+      fetch(event.request, { cache: 'no-store' })
         .then((response) => {
           // Cache successful HTML responses for offline
           if (response.status === 200) {
