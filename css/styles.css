@@ -256,11 +256,15 @@ a {
   padding: 2rem 4rem;
   position: sticky;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   background: rgba(0, 0, 0, 0.8);
   backdrop-filter: saturate(180%) blur(40px);
   -webkit-backdrop-filter: saturate(180%) blur(40px);
   z-index: 100;
   border-bottom: 0.5px solid var(--border);
+  box-sizing: border-box;
 }
 
 .back-button {
@@ -308,10 +312,16 @@ a {
   max-width: 280px !important;
   width: auto;
   height: auto;
-  margin: 0;
+  margin: 0 0 0 auto;
   opacity: 1;
   animation: none;
   filter: brightness(1.1);
+  flex-shrink: 0;
+}
+
+.back-button {
+  flex-shrink: 0;
+  margin-right: auto;
 }
 
 .week-detail-header {
@@ -805,8 +815,14 @@ a {
     max-width: 100px !important;
     width: auto;
     height: auto;
-    margin: 0 auto;
+    margin: 0 0 0 auto;
     display: block;
+    flex-shrink: 0;
+  }
+  
+  .back-button {
+    margin-right: auto;
+    flex-shrink: 0;
   }
 
   .week-detail-header {
