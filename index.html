@@ -3,9 +3,6 @@
 <head>
   <script>
     // Fix paths for GitHub Pages - MUST BE FIRST - Write base and CSS immediately
-    // #region agent log
-    (function(){try{var bp=window.location.pathname.includes('/Mens-Group/')?'/Mens-Group/':'/';window.BASE_PATH=bp;fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:basePathSet',message:'Base path determined',data:{basePath:bp,pathname:window.location.pathname},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});}catch(e){}}());
-    // #endregion
     (function() {
       var path = window.location.pathname;
       var basePath = path.includes('/Mens-Group/') ? '/Mens-Group/' : '/';
@@ -23,6 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Same Battles - A 12-week men's Bible study">
   <meta name="theme-color" content="#c9a227">
+  <link rel="preload" as="image" href="assets/logo/same-battles-logo.png">
   <title>Same Battles - Men's Bible Study</title>
 </head>
 <body>

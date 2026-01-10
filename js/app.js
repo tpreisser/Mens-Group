@@ -171,7 +171,18 @@ class AudioPlayer {
     // Event listeners
     this.playButton.addEventListener('click', () => this.togglePlay());
     
-    // Skip button (skip forward 10 seconds)
+    // Skip back button (skip backward 10 seconds)
+    const skipBackButton = this.container.querySelector('.skip-back-button');
+    if (skipBackButton) {
+      skipBackButton.addEventListener('click', () => {
+        if (this.audio.duration) {
+          this.audio.currentTime = Math.max(0, this.audio.currentTime - 10);
+          this.updatePositionState();
+        }
+      });
+    }
+    
+    // Skip forward button (skip forward 10 seconds)
     const skipButton = this.container.querySelector('.skip-button');
     if (skipButton) {
       skipButton.addEventListener('click', () => {
@@ -372,10 +383,6 @@ function initLazyLoading() {
 
 // Smooth page transition
 function createSmoothTransition(link, href) {
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:359',message:'createSmoothTransition called',data:{href:href,linkText:link.textContent},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,C'})}).catch(()=>{});
-  // #endregion
-  
   // Create transition overlay if it doesn't exist
   let transition = document.getElementById('page-transition');
   if (!transition) {
@@ -404,35 +411,21 @@ function createSmoothTransition(link, href) {
   // Force reflow to ensure initial state is applied
   void transition.offsetHeight;
   
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:383',message:'Transition element ready',data:{transitionId:transition.id,hasActive:transition.classList.contains('active'),opacity:transition.style.opacity},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-  // #endregion
-  
   // Activate transition with smooth animation (use double RAF for better timing)
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       transition.classList.add('active');
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:390',message:'Transition active class added',data:{hasActive:transition.classList.contains('active')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-      // #endregion
     });
   });
   
   // Navigate after animation completes
   setTimeout(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:389',message:'Navigating to week page',data:{href:href},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
     window.location.href = href;
   }, 500);
 }
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:394',message:'DOMContentLoaded fired',data:{pathname:window.location.pathname,isWeekPage:window.location.pathname.includes('/weeks/'),basePath:window.BASE_PATH||'/'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,E,B'})}).catch(()=>{});
-  // #endregion
-  
   // Set base path for GitHub Pages
   var basePath = window.BASE_PATH || '/';
   if (!window.BASE_PATH) {
@@ -446,19 +439,13 @@ document.addEventListener('DOMContentLoaded', () => {
   bgImages.forEach(function(img) {
     var bgPath = img.getAttribute('data-bg');
     if (bgPath) {
-      var fullPath = basePath + bgPath;
-      img.style.backgroundImage = 'url(' + fullPath + ')';
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:407',message:'Fixed background image',data:{bgPath:bgPath,fullPath:fullPath},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-      // #endregion
-    }
+    var fullPath = basePath + bgPath;
+    img.style.backgroundImage = 'url(' + fullPath + ')';
+  }
   });
   
   // Initialize audio players
   const audioContainers = document.querySelectorAll('.audio-player-container');
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:397',message:'Audio containers found',data:{count:audioContainers.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,E'})}).catch(()=>{});
-  // #endregion
   audioContainers.forEach(container => {
     new AudioPlayer(container);
   });
@@ -470,17 +457,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const isExpanded = this.getAttribute('aria-expanded') === 'true';
       const readingText = this.nextElementSibling;
       
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:444',message:'Reading toggle clicked',data:{isExpanded:isExpanded,hasText:!!readingText},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-      // #endregion
-      
       if (isExpanded) {
         this.setAttribute('aria-expanded', 'false');
-        if (readingText) readingText.style.maxHeight = '0';
+        if (readingText) {
+          readingText.style.maxHeight = '0';
+          readingText.style.paddingTop = '0';
+          readingText.style.paddingBottom = '0';
+        }
       } else {
         this.setAttribute('aria-expanded', 'true');
         if (readingText) {
-          readingText.style.maxHeight = readingText.scrollHeight + 'px';
+          const fullHeight = readingText.scrollHeight;
+          readingText.style.maxHeight = fullHeight + 'px';
+          readingText.style.paddingTop = '2rem';
+          readingText.style.paddingBottom = '2rem';
         }
       }
     });
@@ -491,14 +481,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Smooth click animations for week cards
   const weekCards = document.querySelectorAll('.week-card');
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:405',message:'Week cards found',data:{count:weekCards.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-  // #endregion
   weekCards.forEach(card => {
     card.addEventListener('click', function(e) {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:408',message:'Week card clicked',data:{href:this.getAttribute('href')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,C'})}).catch(()=>{});
-      // #endregion
       e.preventDefault();
       const href = this.getAttribute('href');
       
@@ -540,15 +524,9 @@ if ('serviceWorker' in navigator) {
     var swPath = (window.BASE_PATH || '/') + 'sw.js';
     navigator.serviceWorker.register(swPath)
       .then(registration => {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:446',message:'ServiceWorker registered',data:{scope:registration.scope,active:!!registration.active},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-        // #endregion
         console.log('ServiceWorker registered:', registration);
       })
       .catch(error => {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:450',message:'ServiceWorker registration failed',data:{error:error.message},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-        // #endregion
         console.log('ServiceWorker registration failed:', error);
       });
   });

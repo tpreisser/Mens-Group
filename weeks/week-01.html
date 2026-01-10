@@ -6,7 +6,13 @@
       var path = window.location.pathname;
       var basePath = path.includes('/Mens-Group/') ? '/Mens-Group/' : '/';
       window.BASE_PATH = basePath;
-      document.write('<base href="' + basePath + '">');
+      
+      // Write base tag first
+      document.write('<base href="' + basePath + '">\n');
+      
+      // Write CSS link and manifest with absolute path immediately
+      document.write('<link rel="stylesheet" href="' + basePath + 'css/styles.css">\n');
+      document.write('<link rel="manifest" href="' + basePath + 'manifest.json">\n');
     })();
   </script>
   <meta charset="UTF-8">
@@ -14,8 +20,6 @@
   <meta name="description" content="Week 1: The Crash After the Win - Same Battles Men's Bible Study">
   
   <meta name="theme-color" content="#c9a227">
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="css/styles.css">
   <title>Week 1: The Crash After the Win - Same Battles</title>
 </head>
 <body>
@@ -29,10 +33,9 @@
   <main class="container">
     <div class="week-detail-header">
       <div class="week-number">Week 1</div>
-      <h1>The Crash After the Win</h1>
     </div>
 
-    <img src="assets/images/1.png" alt="Week 1" class="week-image" loading="lazy">
+    <img src="assets/images/1.png" alt="Week 1" class="week-image" loading="eager" fetchpriority="high">
 
     <section class="section">
       <h2 class="section-label">Pre-Reading Context</h2>
@@ -40,15 +43,16 @@
         <audio src="assets/audio/Elijah_s_Post-Victory_Crash_and_Burnout.m4a" preload="metadata"></audio>
         <div class="audio-controls">
           <div class="audio-artwork">
-            <img src="assets/images/1.png" alt="Week 1" class="artwork-image">
+            <img src="assets/logo/same-battles-logo.png" alt="Same Battles" class="artwork-image" loading="eager">
           </div>
           <div class="audio-info">
             <div class="audio-title">Elijah's Post-Victory Crash and Burnout</div>
             <div class="audio-subtitle">Same Battles - Week 1</div>
           </div>
           <div class="audio-controls-right">
+            <button class="skip-back-button" aria-label="Jump Back 10 Seconds" title="Jump Back 10 Seconds">-10</button>
             <button class="play-button" aria-label="Play">▶</button>
-            <button class="skip-button" aria-label="Skip Forward">⏭</button>
+            <button class="skip-button" aria-label="Jump Ahead 10 Seconds" title="Jump Ahead 10 Seconds">+10</button>
           </div>
         </div>
         <div class="progress-container">
@@ -99,12 +103,5 @@
   </main>
 
   <script src="js/app.js"></script>
-  <script>
-    // #region agent log
-    document.addEventListener('DOMContentLoaded', function() {
-      fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'week-01.html:DOMContentLoaded',message:'Week page loaded',data:{audioContainers:document.querySelectorAll('.audio-player-container').length,readingContent:!!document.querySelector('.reading-content'),questionsList:!!document.querySelector('.questions-list'),weekImage:!!document.querySelector('.week-image')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,E'})}).catch(()=>{});
-    });
-    // #endregion
-  </script>
 </body>
 </html>
