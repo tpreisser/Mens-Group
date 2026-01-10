@@ -144,16 +144,6 @@ a {
 }
 
 /* Week detail page - keep centered and bigger */
-.week-detail-header .week-number {
-  font-size: 1.75rem;
-  margin-bottom: 4rem;
-  text-align: center;
-  color: var(--text-primary);
-  opacity: 1;
-  display: block;
-  justify-content: center;
-}
-
 .week-date {
   font-size: 1rem;
   color: var(--text-primary);
