@@ -796,6 +796,14 @@ a {
     padding: 1.5rem 2rem;
   }
 
+  .week-header .logo {
+    max-width: 100px !important;
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+  }
+
   .week-detail-header {
     padding: 5rem 2rem 3rem;
   }
