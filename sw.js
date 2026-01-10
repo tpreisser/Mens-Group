@@ -11,7 +11,7 @@ const getBasePath = () => {
 };
 
 const BASE_PATH = getBasePath();
-const CACHE_NAME = 'same-battles-v2';
+const CACHE_NAME = 'same-battles-v3';
 const urlsToCache = [
   BASE_PATH,
   BASE_PATH + 'index.html',
@@ -62,7 +62,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           // Delete all old same-battles caches
-          if (cacheName.startsWith('same-battles-') && !cacheName.startsWith('same-battles-v2-')) {
+          if (cacheName.startsWith('same-battles-') && !cacheName.startsWith('same-battles-v3-')) {
             return caches.delete(cacheName);
           }
         })
