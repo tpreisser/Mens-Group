@@ -430,8 +430,29 @@ function createSmoothTransition(link, href) {
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:394',message:'DOMContentLoaded fired',data:{pathname:window.location.pathname,isWeekPage:window.location.pathname.includes('/weeks/')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,E'})}).catch(()=>{});
+  fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:394',message:'DOMContentLoaded fired',data:{pathname:window.location.pathname,isWeekPage:window.location.pathname.includes('/weeks/'),basePath:window.BASE_PATH||'/'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,E,B'})}).catch(()=>{});
   // #endregion
+  
+  // Set base path for GitHub Pages
+  var basePath = window.BASE_PATH || '/';
+  if (!window.BASE_PATH) {
+    var path = window.location.pathname;
+    basePath = path.includes('/Mens-Group/') ? '/Mens-Group/' : '/';
+    window.BASE_PATH = basePath;
+  }
+  
+  // Fix background images from data-bg attributes
+  const bgImages = document.querySelectorAll('[data-bg]');
+  bgImages.forEach(function(img) {
+    var bgPath = img.getAttribute('data-bg');
+    if (bgPath) {
+      var fullPath = basePath + bgPath;
+      img.style.backgroundImage = 'url(' + fullPath + ')';
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:407',message:'Fixed background image',data:{bgPath:bgPath,fullPath:fullPath},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+      // #endregion
+    }
+  });
   
   // Initialize audio players
   const audioContainers = document.querySelectorAll('.audio-player-container');
@@ -515,7 +536,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // Service Worker Registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
+    // Register service worker with correct path
+    var swPath = (window.BASE_PATH || '/') + 'sw.js';
+    navigator.serviceWorker.register(swPath)
       .then(registration => {
         // #region agent log
         fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:446',message:'ServiceWorker registered',data:{scope:registration.scope,active:!!registration.active},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});

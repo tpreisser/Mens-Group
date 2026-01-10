@@ -4,17 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Week 5: Building While They Mock - Same Battles Men's Bible Study">
+  <script>
+    (function() {
+      var path = window.location.pathname;
+      var basePath = path.includes('/Mens-Group/') ? '/Mens-Group/' : '/';
+      window.BASE_PATH = basePath;
+      document.write('<base href="' + basePath + '">');
+    })();
+  </script>
   <meta name="theme-color" content="#c9a227">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/styles.css">
   <title>Week 5: Building While They Mock - Same Battles</title>
 </head>
 <body>
   <header class="week-header">
-    <a href="/" class="back-button" aria-label="Back to home">
+    <a href="index.html" class="back-button" aria-label="Back to home">
 
     </a>
-    <img src="/assets/logo/same-battles-logo.png" alt="Same Battles" class="logo" style="max-width: 120px; height: auto;">
+    <img src="assets/logo/same-battles-logo.png" alt="Same Battles" class="logo" style="max-width: 120px; height: auto;">
   </header>
 
   <main class="container">
@@ -23,15 +31,15 @@
       <h1>Building While They Mock</h1>
     </div>
 
-    <img src="/assets/images/5.png" alt="Week 5" class="week-image" loading="lazy">
+    <img src="assets/images/5.png" alt="Week 5" class="week-image" loading="lazy">
 
     <section class="section">
       <h2 class="section-label">Pre-Reading Context</h2>
       <div class="audio-player-container">
-        <audio src="/assets/audio/I_Am_Doing_A_Great_Work.m4a" preload="metadata"></audio>
+        <audio src="assets/audio/I_Am_Doing_A_Great_Work.m4a" preload="metadata"></audio>
         <div class="audio-controls">
           <div class="audio-artwork">
-            <img src="/assets/images/5.png" alt="Week 5" class="artwork-image">
+            <img src="assets/images/5.png" alt="Week 5" class="artwork-image">
           </div>
           <div class="audio-info">
             <div class="audio-title">I Am Doing A Great Work</div>
@@ -79,6 +87,6 @@
     </section>
   </main>
 
-  <script src="/js/app.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

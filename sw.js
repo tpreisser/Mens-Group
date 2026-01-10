@@ -1,26 +1,36 @@
 // Service Worker for Same Battles PWA
 // Enables offline functionality and caching
 
+// Detect base path from service worker location
+const getBasePath = () => {
+  const swPath = self.location.pathname;
+  if (swPath.includes('/Mens-Group/')) {
+    return '/Mens-Group/';
+  }
+  return '/';
+};
+
+const BASE_PATH = getBasePath();
 const CACHE_NAME = 'same-battles-v2';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/css/styles.css',
-  '/js/app.js',
-  '/manifest.json',
-  '/assets/logo/same-battles-logo.png',
-  '/weeks/week-01.html',
-  '/weeks/week-02.html',
-  '/weeks/week-03.html',
-  '/weeks/week-04.html',
-  '/weeks/week-05.html',
-  '/weeks/week-06.html',
-  '/weeks/week-07.html',
-  '/weeks/week-08.html',
-  '/weeks/week-09.html',
-  '/weeks/week-10.html',
-  '/weeks/week-11.html',
-  '/weeks/week-12.html'
+  BASE_PATH,
+  BASE_PATH + 'index.html',
+  BASE_PATH + 'css/styles.css',
+  BASE_PATH + 'js/app.js',
+  BASE_PATH + 'manifest.json',
+  BASE_PATH + 'assets/logo/same-battles-logo.png',
+  BASE_PATH + 'weeks/week-01.html',
+  BASE_PATH + 'weeks/week-02.html',
+  BASE_PATH + 'weeks/week-03.html',
+  BASE_PATH + 'weeks/week-04.html',
+  BASE_PATH + 'weeks/week-05.html',
+  BASE_PATH + 'weeks/week-06.html',
+  BASE_PATH + 'weeks/week-07.html',
+  BASE_PATH + 'weeks/week-08.html',
+  BASE_PATH + 'weeks/week-09.html',
+  BASE_PATH + 'weeks/week-10.html',
+  BASE_PATH + 'weeks/week-11.html',
+  BASE_PATH + 'weeks/week-12.html'
 ];
 
 // Install event - cache resources
@@ -28,7 +38,15 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        return cache.addAll(urlsToCache);
+        // Try to cache all URLs, but don't fail if some fail
+        return Promise.allSettled(
+          urlsToCache.map(url => 
+            cache.add(url).catch(err => {
+              console.log('Failed to cache:', url, err);
+              return null;
+            })
+          )
+        );
       })
       .catch((error) => {
         console.log('Cache install failed:', error);
@@ -78,7 +96,7 @@ self.addEventListener('fetch', (event) => {
             }
             // If cache also fails and it's a document request, return index
             if (event.request.destination === 'document') {
-              return caches.match('/index.html');
+              return caches.match(BASE_PATH + 'index.html');
             }
           });
         })
@@ -109,7 +127,7 @@ self.addEventListener('fetch', (event) => {
         .catch(() => {
           // If both cache and network fail, return offline page for documents
           if (event.request.destination === 'document') {
-            return caches.match('/index.html');
+            return caches.match(BASE_PATH + 'index.html');
           }
         })
     );
