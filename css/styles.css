@@ -248,44 +248,44 @@ a {
 }
 
 .back-button {
-  color: var(--text-secondary);
-  font-size: 0;
-  padding: 0.75rem;
-  background: none;
-  border: none;
+  color: var(--text-primary);
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--accent);
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: inherit;
   font-weight: 400;
-  width: 44px;
-  height: 44px;
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 12px;
   position: relative;
-  border: 0.5px solid transparent;
+  min-width: 64px;
+  min-height: 64px;
 }
 
-.back-button::before {
-  content: '';
-  width: 10px;
-  height: 10px;
-  border-left: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: rotate(45deg);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+.back-button svg {
+  width: 32px;
+  height: 32px;
+  stroke: var(--accent);
+  stroke-width: 3;
+  fill: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .back-button:hover {
-  color: var(--text-primary);
-  background: var(--surface);
-  border-color: var(--border);
-  transform: translateX(-3px);
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateX(-4px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(201, 162, 39, 0.3);
 }
 
-.back-button:hover::before {
-  transform: rotate(45deg) translateX(-3px);
+.back-button:hover svg {
+  stroke: var(--primary-dark);
+  transform: translateX(-2px);
 }
 
 .week-header .logo {
