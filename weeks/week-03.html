@@ -30,15 +30,25 @@
       <div class="audio-player-container">
         <audio src="/assets/audio/The_Powerful_General_Who_Refused_Simple_Cure.m4a" preload="metadata"></audio>
         <div class="audio-controls">
-          <button class="play-button" aria-label="Play">▶</button>
-          <div class="progress-container">
-            <div class="progress-bar-wrapper">
-              <span class="time-display left">0:00</span>
-              <div class="progress-bar">
-                <div class="progress-fill"></div>
-              </div>
-              <span class="time-display right">0:00</span>
+          <div class="audio-artwork">
+            <img src="/assets/images/3.png" alt="Week 3" class="artwork-image">
+          </div>
+          <div class="audio-info">
+            <div class="audio-title">The Powerful General Who Refused Simple Cure</div>
+            <div class="audio-subtitle">Same Battles - Week 3</div>
+          </div>
+          <div class="audio-controls-right">
+            <button class="play-button" aria-label="Play">▶</button>
+            <button class="skip-button" aria-label="Skip Forward">⏭</button>
+          </div>
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar-wrapper">
+            <span class="time-display left">0:00</span>
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
             </div>
+            <span class="time-display right">0:00</span>
           </div>
         </div>
       </div>
@@ -47,8 +57,13 @@
     <section class="section">
       <h2 class="section-label">Reading</h2>
       <div class="reading-content">
-        <p><strong>2 Kings 5:1-14</strong></p>
-        <p>[Bible reading text - please add the full passage]</p>
+        <button class="reading-toggle" aria-expanded="false">
+          <span class="reading-reference"><strong>2 Kings 5:1-14</strong></span>
+          <span class="reading-toggle-icon">▼</span>
+        </button>
+        <div class="reading-text">
+          <p>[Bible reading text - please add the full passage]</p>
+        </div>
       </div>
     </section>
 

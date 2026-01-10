@@ -170,6 +170,18 @@ class AudioPlayer {
 
     // Event listeners
     this.playButton.addEventListener('click', () => this.togglePlay());
+    
+    // Skip button (skip forward 10 seconds)
+    const skipButton = this.container.querySelector('.skip-button');
+    if (skipButton) {
+      skipButton.addEventListener('click', () => {
+        if (this.audio.duration) {
+          this.audio.currentTime = Math.min(this.audio.duration, this.audio.currentTime + 10);
+          this.updatePositionState();
+        }
+      });
+    }
+    
     if (this.progressBar) {
       this.progressBar.addEventListener('click', (e) => this.seek(e));
     }
@@ -294,6 +306,7 @@ class AudioPlayer {
     this.isPlaying = true;
     this.playButton.innerHTML = '⏸';
     this.playButton.setAttribute('aria-label', 'Pause');
+    this.container.querySelector('.audio-controls')?.classList.add('playing');
     
     // Update media session for lock screen
     if ('mediaSession' in navigator) {
@@ -306,6 +319,7 @@ class AudioPlayer {
     this.isPlaying = false;
     this.playButton.innerHTML = '▶';
     this.playButton.setAttribute('aria-label', 'Play');
+    this.container.querySelector('.audio-controls')?.classList.remove('playing');
     
     // Update media session for lock screen
     if ('mediaSession' in navigator) {
@@ -320,6 +334,7 @@ class AudioPlayer {
     this.playButton.setAttribute('aria-label', 'Play');
     this.progressFill.style.width = '0%';
     this.audio.currentTime = 0;
+    this.container.querySelector('.audio-controls')?.classList.remove('playing');
   }
 }
 
@@ -425,6 +440,29 @@ document.addEventListener('DOMContentLoaded', () => {
   // #endregion
   audioContainers.forEach(container => {
     new AudioPlayer(container);
+  });
+
+  // Initialize collapsible reading sections
+  const readingToggles = document.querySelectorAll('.reading-toggle');
+  readingToggles.forEach(toggle => {
+    toggle.addEventListener('click', function() {
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+      const readingText = this.nextElementSibling;
+      
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/a3413551-4db0-4577-be85-aee237f993ef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app.js:444',message:'Reading toggle clicked',data:{isExpanded:isExpanded,hasText:!!readingText},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
+      
+      if (isExpanded) {
+        this.setAttribute('aria-expanded', 'false');
+        if (readingText) readingText.style.maxHeight = '0';
+      } else {
+        this.setAttribute('aria-expanded', 'true');
+        if (readingText) {
+          readingText.style.maxHeight = readingText.scrollHeight + 'px';
+        }
+      }
+    });
   });
 
   // Initialize lazy loading
