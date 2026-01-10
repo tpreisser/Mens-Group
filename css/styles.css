@@ -143,6 +143,17 @@ a {
   align-items: baseline;
 }
 
+/* Week detail page - keep centered and bigger */
+.week-detail-header .week-number {
+  font-size: 1.75rem;
+  margin-bottom: 4rem;
+  text-align: center;
+  color: var(--text-primary);
+  opacity: 1;
+  display: block;
+  justify-content: center;
+}
+
 .week-date {
   font-size: 1rem;
   color: var(--text-primary);
@@ -285,7 +296,7 @@ a {
 .back-button svg {
   width: 48px;
   height: 48px;
-  stroke: var(--accent);
+  stroke: var(--text-primary);
   stroke-width: 5;
   fill: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
