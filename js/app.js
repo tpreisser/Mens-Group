@@ -381,9 +381,9 @@ function initLazyLoading() {
   }
 }
 
-// Smooth page transition
+// Smooth page transition - optimized for mobile
 function createSmoothTransition(link, href) {
-  // Create transition overlay if it doesn't exist
+  // Create transition overlay if it doesn't exist (pre-create for performance)
   let transition = document.getElementById('page-transition');
   if (!transition) {
     transition = document.createElement('div');
@@ -404,24 +404,22 @@ function createSmoothTransition(link, href) {
   transition.style.opacity = '0';
   transition.style.transform = 'scale(0)';
   transition.style.display = 'block';
+  transition.style.willChange = 'transform, opacity';
   
   // Remove active class if present from previous transition
   transition.classList.remove('active');
   
-  // Force reflow to ensure initial state is applied
+  // Force reflow immediately
   void transition.offsetHeight;
   
-  // Activate transition with smooth animation (use double RAF for better timing)
+  // Activate transition immediately - no delays for mobile performance
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      transition.classList.add('active');
-    });
+    transition.classList.add('active');
+    // Navigate faster for better UX
+    setTimeout(() => {
+      window.location.href = href;
+    }, 350);
   });
-  
-  // Navigate after animation completes
-  setTimeout(() => {
-    window.location.href = href;
-  }, 500);
 }
 
 // Initialize app when DOM is ready
@@ -479,22 +477,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize lazy loading
   initLazyLoading();
 
-  // Smooth click animations for week cards
+  // Smooth click animations for week cards - optimized for mobile
   const weekCards = document.querySelectorAll('.week-card');
   weekCards.forEach(card => {
     card.addEventListener('click', function(e) {
       e.preventDefault();
       const href = this.getAttribute('href');
       
-      // Immediate feedback with smooth scale
+      // Immediate visual feedback - use GPU acceleration
       this.style.transform = 'scale(0.96)';
-      this.style.transition = 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)';
+      this.style.transition = 'transform 0.1s cubic-bezier(0.4, 0, 0.2, 1)';
+      this.style.willChange = 'transform';
       
-      // Start transition after brief delay for tactile feedback
+      // Start transition immediately - no delays for mobile smoothness
       requestAnimationFrame(() => {
-        setTimeout(() => {
-          createSmoothTransition(this, href);
-        }, 80);
+        createSmoothTransition(this, href);
       });
     });
   });
