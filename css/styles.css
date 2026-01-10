@@ -289,7 +289,9 @@ a {
 }
 
 .week-header .logo {
-  max-width: 120px;
+  max-width: 280px !important;
+  width: auto;
+  height: auto;
   margin: 0;
   opacity: 1;
   animation: none;
