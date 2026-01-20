@@ -10,9 +10,9 @@
       // Write base tag first
       document.write('<base href="' + basePath + '">\n');
       
-      // Write CSS link and manifest with absolute path immediately
-      var cacheBuster = '?v=' + Date.now() + 'var cacheBuster = '?v=' + Date.now() + 'var cacheBuster = '?v=' + Date.now() + '&cb=' + Math.random();
-      document.write('<link rel="stylesheet" href="' + basePath + 'css/styles.css' + cacheBuster + '">cb=' + Math.random(); document.write('<link rel="stylesheet" href="' + basePath + 'css/styles.css' + cacheBuster + '">cb=' + Math.random(); document.write('<link rel="stylesheet" href="' + basePath + 'css/styles.css' + cacheBuster + '">\n');
+      // Write CSS link and manifest with absolute path immediately - cache busting
+      var cacheBuster = '?v=' + Date.now() + '&cb=' + Math.random();
+      document.write('<link rel="stylesheet" href="' + basePath + 'css/styles.css' + cacheBuster + '">\n');
       document.write('<link rel="manifest" href="' + basePath + 'manifest.json' + cacheBuster + '">\n');
     })();
   </script>
