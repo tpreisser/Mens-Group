@@ -435,13 +435,31 @@ document.addEventListener('DOMContentLoaded', () => {
   // Lazy load background images from data-bg attributes
   const bgImages = document.querySelectorAll('[data-bg]');
   
-  // Load critical images immediately (weeks 1-4)
+  // Load critical images immediately (weeks 1-4) with preloading
   const criticalImages = document.querySelectorAll('[data-bg][loading="eager"]');
   criticalImages.forEach(function(img) {
     var bgPath = img.getAttribute('data-bg');
     if (bgPath) {
       var fullPath = basePath + bgPath;
+      // Preload the image to ensure it's available
+      const imageLoader = new Image();
+      imageLoader.onload = function() {
+        img.style.backgroundImage = 'url(' + fullPath + ')';
+        img.classList.add('loaded');
+        img.style.opacity = '1';
+      };
+      imageLoader.onerror = function() {
+        // If image fails to load, keep trying or show placeholder
+        console.warn('Failed to load image:', fullPath);
+        // Still set the background - browser may retry
+        img.style.backgroundImage = 'url(' + fullPath + ')';
+        img.classList.add('loaded');
+      };
+      imageLoader.src = fullPath;
+      // Set background immediately even if not fully loaded
       img.style.backgroundImage = 'url(' + fullPath + ')';
+      img.classList.add('loaded');
+      img.style.opacity = '1';
     }
   });
   
@@ -456,8 +474,20 @@ document.addEventListener('DOMContentLoaded', () => {
           var bgPath = img.getAttribute('data-bg');
           if (bgPath) {
             var fullPath = basePath + bgPath;
-            img.style.backgroundImage = 'url(' + fullPath + ')';
-            img.classList.add('loaded');
+            // Preload image first
+            const imageLoader = new Image();
+            imageLoader.onload = function() {
+              img.style.backgroundImage = 'url(' + fullPath + ')';
+              img.classList.add('loaded');
+              img.style.opacity = '1';
+            };
+            imageLoader.onerror = function() {
+              // Still set the background - browser may retry
+              img.style.backgroundImage = 'url(' + fullPath + ')';
+              img.classList.add('loaded');
+              img.style.opacity = '1';
+            };
+            imageLoader.src = fullPath;
             observer.unobserve(img);
           }
         }
@@ -474,6 +504,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (bgPath) {
         var fullPath = basePath + bgPath;
         img.style.backgroundImage = 'url(' + fullPath + ')';
+        img.classList.add('loaded');
+        img.style.opacity = '1';
       }
     });
   }

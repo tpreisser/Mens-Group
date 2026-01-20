@@ -141,6 +141,9 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 2;
 }
 
 /* Week detail page - keep centered and bigger */
@@ -153,7 +156,9 @@ a {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   margin: 0;
   padding: 0;
-  opacity: 0.9;
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 2;
 }
 
 .week-card {
@@ -172,6 +177,12 @@ a {
   /* Enable GPU acceleration for smooth animations on mobile */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  z-index: 1;
+}
+
+.week-item {
+  position: relative;
+  z-index: 1;
 }
 
 .week-card::before {
@@ -208,12 +219,13 @@ a {
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-in-out;
   z-index: 0;
   filter: brightness(0.95);
-  background-color: var(--secondary-dark);
+  /* Remove dark background - let the image show through immediately */
 }
 
 /* Lazy loaded images start hidden and fade in */
 .week-card-image[loading="lazy"] {
   opacity: 0;
+  background-color: var(--secondary-dark); /* Only dark background for lazy images */
 }
 
 .week-card-image[loading="lazy"].loaded {
@@ -223,6 +235,7 @@ a {
 /* Critical images (weeks 1-4) load immediately and are visible */
 .week-card-image[loading="eager"] {
   opacity: 1;
+  /* No dark background - image should load immediately */
 }
 
 .week-card:hover .week-card-image {
@@ -820,6 +833,30 @@ a {
     grid-template-columns: 1fr;
     gap: 2.5rem;
     padding: 0 0 6rem;
+  }
+
+  /* Ensure week numbers and dates are visible on mobile */
+  .week-number {
+    font-size: 0.875rem !important;
+    color: var(--text-primary) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    margin-bottom: 1rem !important;
+    padding: 0.5rem 0 !important;
+    z-index: 2 !important;
+    position: relative !important;
+  }
+
+  .week-date {
+    font-size: 0.875rem !important;
+    color: var(--text-primary) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline !important;
+    z-index: 2 !important;
+    position: relative !important;
+    margin-left: 0.5rem !important;
   }
 
   .week-header {
