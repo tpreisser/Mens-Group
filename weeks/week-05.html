@@ -72,14 +72,6 @@
     
   </main>
 
-  <script>
-    // Cache busting for app.js
-    (function() {
-      var basePath = window.BASE_PATH || '/';
-      var script = document.createElement('script');
-      script.src = basePath + 'js/app.js';
-      document.body.appendChild(script);
-    })();
-  </script>
+  <script src="js/app.js"></script>
 </body>
 </html>
