@@ -369,14 +369,14 @@ a {
 }
 
 .back-button:hover {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--text-primary);
   transform: translateX(-4px) scale(1.05);
-  box-shadow: 0 4px 12px rgba(201, 162, 39, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 .back-button:hover svg {
-  stroke: var(--primary-dark);
+  stroke: var(--text-primary);
   transform: translateX(-2px);
 }
 
