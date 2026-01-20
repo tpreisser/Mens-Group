@@ -109,23 +109,49 @@ a {
 
 .week-item {
   position: relative;
-  opacity: 0;
-  transform: translateY(40px);
-  animation: cardFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* Start visible instead of invisible - faster perceived load */
+  opacity: 1;
+  transform: translateY(0);
+  animation: cardFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 1;
 }
 
-.week-item:nth-child(1) { animation-delay: 0.1s; }
-.week-item:nth-child(2) { animation-delay: 0.15s; }
-.week-item:nth-child(3) { animation-delay: 0.2s; }
-.week-item:nth-child(4) { animation-delay: 0.25s; }
-.week-item:nth-child(5) { animation-delay: 0.3s; }
-.week-item:nth-child(6) { animation-delay: 0.35s; }
-.week-item:nth-child(7) { animation-delay: 0.4s; }
-.week-item:nth-child(8) { animation-delay: 0.45s; }
-.week-item:nth-child(9) { animation-delay: 0.5s; }
-.week-item:nth-child(10) { animation-delay: 0.55s; }
-.week-item:nth-child(11) { animation-delay: 0.6s; }
-.week-item:nth-child(12) { animation-delay: 0.65s; }
+/* Ensure week numbers and dates are always visible */
+.week-item .week-number {
+  position: relative;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: var(--text-primary) !important;
+  display: flex !important;
+}
+
+.week-item .week-date {
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: var(--text-primary) !important;
+  display: inline !important;
+}
+
+/* Fallback: ensure week-item becomes visible even if animation fails */
+.week-item[style*="opacity"] {
+  opacity: 1 !important;
+}
+
+/* Reduce animation delays for faster initial visibility */
+.week-item:nth-child(1) { animation-delay: 0s; }
+.week-item:nth-child(2) { animation-delay: 0.05s; }
+.week-item:nth-child(3) { animation-delay: 0.1s; }
+.week-item:nth-child(4) { animation-delay: 0.15s; }
+.week-item:nth-child(5) { animation-delay: 0.2s; }
+.week-item:nth-child(6) { animation-delay: 0.25s; }
+.week-item:nth-child(7) { animation-delay: 0.3s; }
+.week-item:nth-child(8) { animation-delay: 0.35s; }
+.week-item:nth-child(9) { animation-delay: 0.4s; }
+.week-item:nth-child(10) { animation-delay: 0.45s; }
+.week-item:nth-child(11) { animation-delay: 0.5s; }
+.week-item:nth-child(12) { animation-delay: 0.55s; }
 
 .week-number {
   font-size: 1rem;
@@ -752,7 +778,7 @@ a {
 @keyframes cardFadeIn {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
