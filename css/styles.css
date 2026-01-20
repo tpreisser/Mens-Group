@@ -1310,6 +1310,9 @@ a {
 
   .week-image {
     margin: 0 auto 3rem;
+    max-height: 50vh;
+    aspect-ratio: auto;
+    object-fit: contain;
   }
 
   .section {
