@@ -4,9 +4,10 @@
   "description": "A 12-week men's Bible study",
   "start_url": "/Mens-Group/",
   "display": "standalone",
-  "background_color": "#1a1a1a",
+  "background_color": "#000000",
   "theme_color": "#c9a227",
   "orientation": "portrait-primary",
+  "version": "2.0.0",
   "icons": [
     {
       "src": "assets/logo/icon-192.png",
