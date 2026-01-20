@@ -432,15 +432,51 @@ document.addEventListener('DOMContentLoaded', () => {
     window.BASE_PATH = basePath;
   }
   
-  // Fix background images from data-bg attributes
+  // Lazy load background images from data-bg attributes
   const bgImages = document.querySelectorAll('[data-bg]');
-  bgImages.forEach(function(img) {
+  
+  // Load critical images immediately (weeks 1-4)
+  const criticalImages = document.querySelectorAll('[data-bg][loading="eager"]');
+  criticalImages.forEach(function(img) {
     var bgPath = img.getAttribute('data-bg');
     if (bgPath) {
-    var fullPath = basePath + bgPath;
-    img.style.backgroundImage = 'url(' + fullPath + ')';
-  }
+      var fullPath = basePath + bgPath;
+      img.style.backgroundImage = 'url(' + fullPath + ')';
+    }
   });
+  
+  // Lazy load remaining images when they come into view
+  const lazyImages = Array.from(bgImages).filter(img => img.getAttribute('loading') !== 'eager');
+  
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          var bgPath = img.getAttribute('data-bg');
+          if (bgPath) {
+            var fullPath = basePath + bgPath;
+            img.style.backgroundImage = 'url(' + fullPath + ')';
+            img.classList.add('loaded');
+            observer.unobserve(img);
+          }
+        }
+      });
+    }, {
+      rootMargin: '50px' // Start loading 50px before image enters viewport
+    });
+    
+    lazyImages.forEach(img => imageObserver.observe(img));
+  } else {
+    // Fallback for browsers without IntersectionObserver - load all immediately
+    lazyImages.forEach(function(img) {
+      var bgPath = img.getAttribute('data-bg');
+      if (bgPath) {
+        var fullPath = basePath + bgPath;
+        img.style.backgroundImage = 'url(' + fullPath + ')';
+      }
+    });
+  }
   
   // Initialize audio players
   const audioContainers = document.querySelectorAll('.audio-player-container');
