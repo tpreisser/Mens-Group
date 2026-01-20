@@ -10,95 +10,6 @@
       // Write base tag first
       document.write('<base href="' + basePath + '">\n');
       
-      // Write CSS link and manifest with absolute path immediately - cache busting
-      var cacheBuster = '?v=' + Date.now() + '&cb=' + Math.random();
-      document.write('<link rel="stylesheet" href="' + basePath + 'css/styles.css' + cacheBuster + '">\n');
-      document.write('<link rel="manifest" href="' + basePath + 'manifest.json' + cacheBuster + '">\n');
-    })();
-  </script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Week 2: The Name You've Been Living Under - Same Battles Men's Bible Study">
-  
-  <meta name="theme-color" content="#c9a227">
-  <title>Week 2: The Name You've Been Living Under - Same Battles</title>
-</head>
-<body>
-  <header class="week-header">
-    <a href="index.html" class="back-button" aria-label="Back to home">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <!-- Bold back arrow - 4x bigger -->
-        <path d="M 15 18 L 9 12 L 15 6" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
-    <img src="assets/logo/same-battles-logo.webp" alt="Same Battles" class="logo" style="max-width: 280px; height: auto;">
-  </header>
-  <main class="container">
-    <div class="week-detail-header">
-      <div class="week-number">Week 2</div>
-    </div>
-
-    <img src="assets/images/2.webp" alt="Week 2" class="week-image" loading="eager" fetchpriority="high" decoding="async">
-
-    <section class="section">
-      <h2 class="section-label">Pre-Reading Context</h2>
-      <div class="reading-content">
-        <button class="reading-toggle" aria-expanded="false">
-          <span class="reading-reference"><strong>Characters</strong></span>
-          <span class="reading-toggle-icon">▼</span>
-        </button>
-        <div class="reading-text">
-          <p><strong>Jacob</strong> — His name means "heel-grabber" or "supplanter"—a Hebrew idiom for someone who deceives or takes what belongs to another. He was the second-born twin son of Isaac and Rebekah, grandson of Abraham. From birth, he grasped his brother's heel as if trying to pull him back. He would spend decades living up to that name—manipulating, scheming, and taking by deception what God had already promised to give him.</p>
-          <p><strong>Esau</strong> — Jacob's twin brother, the firstborn. He was a hunter, a man of the field, favored by their father Isaac. Esau sold his birthright to Jacob for a bowl of stew and later had his father's blessing stolen through Jacob's deception. He vowed to kill Jacob once their father died. Twenty years have passed, but the wrong has never been made right. He is now coming to meet Jacob with 400 men.</p>
-          <p><strong>Isaac and Rebekah</strong> — Jacob's parents. Before the twins were born, God told Rebekah that two nations were in her womb and that the older would serve the younger. Isaac favored Esau; Rebekah favored Jacob. When Isaac, old and blind, prepared to give Esau the covenant blessing, Rebekah devised a scheme for Jacob to impersonate Esau and steal it. Jacob obeyed, deceiving his dying father and robbing his brother. The blessing could not be undone.</p>
-          <p><strong>Laban</strong> — Rebekah's brother and Jacob's uncle. After stealing the blessing, Jacob fled to Laban's household to escape Esau's wrath. Jacob worked seven years to marry Laban's daughter Rachel, but on the wedding night Laban switched her for her older sister Leah. The deceiver was deceived. Jacob worked another seven years for Rachel, plus six more years building his own flocks. For twenty years, Laban manipulated and cheated Jacob repeatedly—and Jacob learned what it felt like to be on the receiving end of his own tactics.</p>
-          <p><strong>The Man</strong> — The text says "a man wrestled with him until the breaking of the day." But this was no ordinary man. Jacob himself named the place Peniel, meaning "face of God," saying, "I have seen God face to face, and yet my life has been delivered." The prophet Hosea confirms Jacob "strove with God" and "strove with the angel and prevailed" (Hosea 12:3-4). This was a physical encounter with God Himself—what many Protestant scholars understand as a pre-incarnate appearance of Christ.</p>
-        </div>
-      </div>
-      <div class="reading-content" style="margin-top: 1rem;">
-        <button class="reading-toggle" aria-expanded="false">
-          <span class="reading-reference"><strong>Context</strong></span>
-          <span class="reading-toggle-icon">▼</span>
-        </button>
-        <div class="reading-text">
-          <p>Twenty years earlier, Jacob fled his father's house with nothing but a staff, running from a brother who wanted to kill him. Now he is returning to Canaan a wealthy man—with two wives, two concubines, eleven sons, servants, and massive flocks. But he is about to face the brother he wronged.</p>
-          <p>Word comes that Esau is approaching with 400 men. Jacob is terrified. He divides his camp so that if Esau attacks, at least half might survive. He sends wave after wave of gifts ahead—550 animals in total—hoping to appease his brother's anger. He prays to God, acknowledging he is unworthy of all the steadfast love he has received.</p>
-          <p>Then night falls. Jacob sends his family across the Jabbok River. And for the first time in twenty years of running, scheming, and striving, Jacob is alone.</p>
-          <p>This is where the passage begins. A man appears and wrestles with Jacob through the night. When the man cannot overpower him, He touches Jacob's hip and dislocates it. But even wounded, Jacob will not let go. "I will not let you go unless you bless me."</p>
-          <p>Then God asks him a question: "What is your name?"</p>
-          <p>Jacob must answer. He must say it out loud: <em>Jacob</em>—deceiver, supplanter, heel-grabber. The name he has been living under his entire life.</p>
-          <p>And God gives him a new one.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-label">Reading</h2>
-      <div class="reading-content">
-        <button class="reading-toggle" aria-expanded="false">
-          <span class="reading-reference"><strong>Genesis 32:22-32</strong></span>
-          <span class="reading-toggle-icon">▼</span>
-        </button>
-        <div class="reading-text">
-          <p>[Bible reading text - please add the full passage]</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-label">Discussion Questions</h2>
-      <ul class="questions-list">
-        <li>Jacob's name meant "deceiver" and he lived up to it. What labels—from your family, your past, your own head—have shaped how you operate?</li>
-        <li>God made Jacob say his own name out loud before renaming him. Why would owning who you've been be the first step to becoming someone different?</li>
-        <li>Jacob had been running and scheming for 20 years. It took being alone with nowhere to go for this to happen. When has being cornered led to a breakthrough for you?</li>
-        <li>Jacob got a new name but walked away with a permanent limp. What does it mean that real transformation left a mark on him?</li>
-        <li>What's the difference between wanting to change and actually wrestling with God over it?</li>
-      </ul>
-    </section>
-  </main>
-
-  <script>
-    // Cache busting for app.js
     (function() {
       var basePath = window.BASE_PATH || '/';
       var script = document.createElement('script');
@@ -108,3 +19,4 @@
   </script>
 </body>
 </html>
+  <script src="js/app.js"></script>
