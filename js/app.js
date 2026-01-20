@@ -519,24 +519,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize collapsible reading sections
   const readingToggles = document.querySelectorAll('.reading-toggle');
   readingToggles.forEach(toggle => {
-    toggle.addEventListener('click', function() {
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
       const isExpanded = this.getAttribute('aria-expanded') === 'true';
       const readingText = this.nextElementSibling;
       
       if (isExpanded) {
         this.setAttribute('aria-expanded', 'false');
-        if (readingText) {
+        if (readingText && readingText.classList.contains('reading-text')) {
           readingText.style.maxHeight = '0';
           readingText.style.paddingTop = '0';
           readingText.style.paddingBottom = '0';
+          readingText.style.opacity = '0';
         }
       } else {
         this.setAttribute('aria-expanded', 'true');
-        if (readingText) {
+        if (readingText && readingText.classList.contains('reading-text')) {
           const fullHeight = readingText.scrollHeight;
           readingText.style.maxHeight = fullHeight + 'px';
           readingText.style.paddingTop = '2rem';
           readingText.style.paddingBottom = '2rem';
+          readingText.style.opacity = '1';
+          readingText.style.lineHeight = '1.8';
+          readingText.style.height = 'auto';
         }
       }
     });
