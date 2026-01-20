@@ -140,44 +140,89 @@
 
   <noscript>
     <style>
-      .week-card-image {
-        background-image: url(assets/images/1.webp);
+      /* Fallback for users without JavaScript - ensure images and content are visible */
+      .week-item:nth-child(1) .week-card-image {
+        background-image: url(assets/images/1.webp) !important;
+        opacity: 1 !important;
       }
       .week-item:nth-child(2) .week-card-image {
-        background-image: url(assets/images/2.webp);
+        background-image: url(assets/images/2.webp) !important;
+        opacity: 1 !important;
       }
       .week-item:nth-child(3) .week-card-image {
-        background-image: url(assets/images/3.webp);
+        background-image: url(assets/images/3.webp) !important;
+        opacity: 1 !important;
       }
       .week-item:nth-child(4) .week-card-image {
-        background-image: url(assets/images/4.webp);
+        background-image: url(assets/images/4.webp) !important;
+        opacity: 1 !important;
       }
       .week-item:nth-child(5) .week-card-image {
-        background-image: url(assets/images/5.webp);
+        background-image: url(assets/images/5.webp) !important;
+        opacity: 1 !important;
       }
       .week-item:nth-child(6) .week-card-image {
-        background-image: url(assets/images/6.webp);
+        background-image: url(assets/images/6.webp) !important;
+        opacity: 1 !important;
       }
       .week-item:nth-child(7) .week-card-image {
-        background-image: url(assets/images/7.webp);
+        background-image: url(assets/images/7.webp) !important;
+        opacity: 1 !important;
       }
       .week-item:nth-child(8) .week-card-image {
-        background-image: url(assets/images/8.webp);
+        background-image: url(assets/images/8.webp) !important;
+        opacity: 1 !important;
       }
       .week-item:nth-child(9) .week-card-image {
-        background-image: url(assets/images/9.webp);
+        background-image: url(assets/images/9.webp) !important;
+        opacity: 1 !important;
       }
       .week-item:nth-child(10) .week-card-image {
-        background-image: url(assets/images/10.webp);
+        background-image: url(assets/images/10.webp) !important;
+        opacity: 1 !important;
       }
       .week-item:nth-child(11) .week-card-image {
-        background-image: url(assets/images/11.webp);
+        background-image: url(assets/images/11.webp) !important;
+        opacity: 1 !important;
       }
       .week-item:nth-child(12) .week-card-image {
-        background-image: url(assets/images/12.webp);
+        background-image: url(assets/images/12.webp) !important;
+        opacity: 1 !important;
       }
     </style>
   </noscript>
+  
+  <!-- Immediate image loading script - runs before DOMContentLoaded -->
+  <script>
+    (function() {
+      // This runs immediately when script loads, not waiting for DOMContentLoaded
+      function loadImagesImmediately() {
+        var basePath = window.BASE_PATH || (window.location.pathname.includes('/Mens-Group/') ? '/Mens-Group/' : '/');
+        var images = document.querySelectorAll('[data-bg][loading="eager"]');
+        images.forEach(function(img) {
+          var bgPath = img.getAttribute('data-bg');
+          if (bgPath) {
+            var fullPath = basePath + bgPath;
+            // Set background immediately - don't wait for anything
+            img.style.backgroundImage = 'url(' + fullPath + ')';
+            img.style.opacity = '1';
+            img.classList.add('loaded');
+          }
+        });
+      }
+      
+      // Try to load immediately if DOM is ready
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(loadImagesImmediately, 0);
+      } else {
+        // Wait for DOM but don't wait for full page load
+        document.addEventListener('DOMContentLoaded', loadImagesImmediately);
+      }
+      
+      // Also try after a short delay as fallback
+      setTimeout(loadImagesImmediately, 100);
+    })();
+  </script>
 
   <script src="js/app.js"></script>
 </body>
