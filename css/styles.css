@@ -1367,6 +1367,284 @@ a {
   .reading-toggle {
     min-height: 48px;
   }
+
+  /* Ensure week detail page elements are properly sized on touch devices */
+  .week-detail-header .week-number {
+    font-size: 1.75rem !important;
+    text-align: center !important;
+    width: 100% !important;
+    display: block !important;
+  }
+
+  .week-image {
+    max-height: 70vh;
+    object-fit: contain;
+    aspect-ratio: auto;
+  }
+}
+
+/* iPhone Specific Optimizations */
+@media screen and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+  .week-detail-header {
+    padding: 4rem 1.5rem 2.5rem;
+  }
+
+  .week-detail-header .week-number {
+    font-size: 1.75rem !important;
+    text-align: center !important;
+    width: 100% !important;
+    display: block !important;
+    margin-bottom: 2.5rem;
+  }
+
+  .week-image {
+    width: 100%;
+    max-height: 65vh;
+    object-fit: contain;
+    aspect-ratio: auto;
+    margin: 0 auto 4rem;
+  }
+}
+
+/* iPhone X and newer (notch support) */
+@media screen and (max-device-width: 428px) and (-webkit-min-device-pixel-ratio: 3) {
+  .week-detail-header {
+    padding-top: max(4rem, env(safe-area-inset-top, 4rem));
+  }
+
+  .week-header {
+    padding-top: max(1.5rem, env(safe-area-inset-top, 1.5rem));
+  }
+}
+
+/* iPad Specific Optimizations */
+@media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  .week-detail-header .week-number {
+    font-size: 2rem !important;
+    text-align: center !important;
+    width: 100% !important;
+    display: block !important;
+  }
+
+  .week-image {
+    max-height: 75vh;
+    object-fit: contain;
+    aspect-ratio: auto;
+  }
+}
+
+/* Android Phone Optimizations */
+@media screen and (max-width: 480px) and (orientation: portrait) {
+  .week-detail-header .week-number {
+    font-size: 1.75rem !important;
+    text-align: center !important;
+    width: 100% !important;
+    display: block !important;
+  }
+
+  .week-image {
+    max-height: 60vh;
+    object-fit: contain;
+    aspect-ratio: auto;
+  }
+}
+
+/* Android Tablet Optimizations */
+@media screen and (min-width: 600px) and (max-width: 1024px) {
+  .week-detail-header .week-number {
+    font-size: 2rem !important;
+    text-align: center !important;
+  }
+
+  .week-image {
+    max-height: 70vh;
+    object-fit: contain;
+  }
+}
+
+/* Samsung Galaxy Fold and similar foldable devices */
+@media screen and (max-width: 280px) {
+  .week-detail-header .week-number {
+    font-size: 1.25rem !important;
+    text-align: center !important;
+  }
+
+  .week-image {
+    max-height: 50vh;
+    object-fit: contain;
+  }
+}
+
+/* Very wide screens (ultrawide monitors) */
+@media screen and (min-width: 1920px) {
+  .week-detail-header .week-number {
+    font-size: 2.5rem;
+  }
+
+  .week-image {
+    max-width: 1400px;
+    max-height: 80vh;
+  }
+}
+
+/* 4K and higher resolution displays */
+@media screen and (min-width: 2560px) {
+  .week-detail-header .week-number {
+    font-size: 3rem;
+  }
+
+  .week-image {
+    max-width: 1600px;
+    max-height: 85vh;
+  }
+}
+
+/* Ensure week detail header is always centered and visible */
+.week-detail-header {
+  text-align: center !important;
+  width: 100% !important;
+}
+
+.week-detail-header .week-number {
+  text-align: center !important;
+  width: 100% !important;
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Ensure week image never gets cropped - Universal rule for all devices */
+.week-image {
+  object-fit: contain !important;
+  object-position: center !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Universal week number centering - applies to all weeks on all devices */
+.week-detail-header .week-number {
+  text-align: center !important;
+  width: 100% !important;
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 0 !important;
+}
+
+/* Additional device-specific overrides for maximum compatibility */
+
+/* Small Android phones (320px - 360px) */
+@media screen and (max-width: 360px) and (min-width: 320px) {
+  .week-detail-header .week-number {
+    font-size: 1.5rem !important;
+  }
+
+  .week-image {
+    max-height: 55vh !important;
+  }
+}
+
+/* Medium phones (361px - 414px) */
+@media screen and (min-width: 361px) and (max-width: 414px) {
+  .week-detail-header .week-number {
+    font-size: 1.75rem !important;
+  }
+
+  .week-image {
+    max-height: 65vh !important;
+  }
+}
+
+/* Large phones (415px - 480px) */
+@media screen and (min-width: 415px) and (max-width: 480px) {
+  .week-detail-header .week-number {
+    font-size: 2rem !important;
+  }
+
+  .week-image {
+    max-height: 70vh !important;
+  }
+}
+
+/* Small tablets (481px - 767px) */
+@media screen and (min-width: 481px) and (max-width: 767px) {
+  .week-detail-header .week-number {
+    font-size: 2.25rem !important;
+  }
+
+  .week-image {
+    max-height: 75vh !important;
+  }
+}
+
+/* Tablets (768px - 1024px) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .week-detail-header .week-number {
+    font-size: 2.5rem !important;
+  }
+
+  .week-image {
+    max-height: 80vh !important;
+  }
+}
+
+/* Desktop (1025px+) */
+@media screen and (min-width: 1025px) {
+  .week-detail-header .week-number {
+    font-size: 1.75rem !important;
+  }
+
+  .week-image {
+    max-height: 85vh !important;
+    max-width: 1200px !important;
+  }
+}
+
+/* Landscape phone optimizations */
+@media screen and (max-width: 900px) and (orientation: landscape) {
+  .week-detail-header {
+    padding: 3rem 2rem 2rem !important;
+  }
+
+  .week-detail-header .week-number {
+    font-size: 1.5rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .week-image {
+    max-height: 50vh !important;
+    margin: 0 auto 3rem !important;
+  }
+}
+
+/* Portrait phone optimizations */
+@media screen and (max-width: 480px) and (orientation: portrait) {
+  .week-detail-header .week-number {
+    font-size: 1.75rem !important;
+  }
+
+  .week-image {
+    max-height: 60vh !important;
+  }
+}
+
+/* Ensure container doesn't cause overflow on any device */
+.container {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+/* Prevent any horizontal scrolling */
+body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+}
+
+/* Ensure main content area is always properly sized */
+main.container {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
