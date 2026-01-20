@@ -121,7 +121,7 @@ a {
   z-index: 1;
 }
 
-/* Ensure week numbers and dates are always visible */
+/* Ensure week numbers and dates are always visible - CRITICAL for Safari */
 .week-item .week-number {
   position: relative;
   z-index: 3;
@@ -130,6 +130,9 @@ a {
   visibility: visible !important;
   color: var(--text-primary) !important;
   display: flex !important;
+  /* Force visibility even if images don't load */
+  background: transparent !important;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
 
 .week-item .week-date {
@@ -137,6 +140,7 @@ a {
   visibility: visible !important;
   color: var(--text-primary) !important;
   display: inline !important;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
 
 /* Fallback: ensure week-item becomes visible even if animation fails */
@@ -280,6 +284,17 @@ a {
 .week-card-image[loading="eager"] {
   opacity: 1;
   /* No dark background - image should load immediately */
+  /* Ensure background-image works even if JS hasn't run yet */
+  min-height: 200px;
+}
+
+/* Fallback: ensure images are visible even without JS */
+.week-card-image {
+  /* Safari fix: ensure background images render */
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .week-card:hover .week-card-image {

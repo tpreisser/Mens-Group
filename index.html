@@ -14,6 +14,21 @@
       // Write CSS link with absolute path immediately
       document.write('<link rel="stylesheet" href="' + basePath + 'css/styles.css">\n');
       document.write('<link rel="manifest" href="' + basePath + 'manifest.json">\n');
+      
+      // Immediately set background images for critical weeks (before DOM ready)
+      // This ensures images show even if JavaScript is slow or fails
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          var images = document.querySelectorAll('[data-bg][loading="eager"]');
+          images.forEach(function(img) {
+            var bgPath = img.getAttribute('data-bg');
+            if (bgPath && (!img.style.backgroundImage || img.style.backgroundImage === 'none')) {
+              img.style.backgroundImage = 'url(' + basePath + bgPath + ')';
+              img.style.opacity = '1';
+            }
+          });
+        });
+      }
     })();
   </script>
   <meta charset="UTF-8">
@@ -122,6 +137,47 @@
   </main>
 
   <div id="page-transition" class="page-transition" style="display: none;"></div>
+
+  <noscript>
+    <style>
+      .week-card-image {
+        background-image: url(assets/images/1.webp);
+      }
+      .week-item:nth-child(2) .week-card-image {
+        background-image: url(assets/images/2.webp);
+      }
+      .week-item:nth-child(3) .week-card-image {
+        background-image: url(assets/images/3.webp);
+      }
+      .week-item:nth-child(4) .week-card-image {
+        background-image: url(assets/images/4.webp);
+      }
+      .week-item:nth-child(5) .week-card-image {
+        background-image: url(assets/images/5.webp);
+      }
+      .week-item:nth-child(6) .week-card-image {
+        background-image: url(assets/images/6.webp);
+      }
+      .week-item:nth-child(7) .week-card-image {
+        background-image: url(assets/images/7.webp);
+      }
+      .week-item:nth-child(8) .week-card-image {
+        background-image: url(assets/images/8.webp);
+      }
+      .week-item:nth-child(9) .week-card-image {
+        background-image: url(assets/images/9.webp);
+      }
+      .week-item:nth-child(10) .week-card-image {
+        background-image: url(assets/images/10.webp);
+      }
+      .week-item:nth-child(11) .week-card-image {
+        background-image: url(assets/images/11.webp);
+      }
+      .week-item:nth-child(12) .week-card-image {
+        background-image: url(assets/images/12.webp);
+      }
+    </style>
+  </noscript>
 
   <script src="js/app.js"></script>
 </body>

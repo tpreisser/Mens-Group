@@ -422,6 +422,65 @@ function createSmoothTransition(link, href) {
   });
 }
 
+// Load images immediately - don't wait for DOMContentLoaded for critical images
+(function() {
+  // Set base path for GitHub Pages
+  var basePath = window.BASE_PATH || '/';
+  if (!window.BASE_PATH) {
+    var path = window.location.pathname;
+    basePath = path.includes('/Mens-Group/') ? '/Mens-Group/' : '/';
+    window.BASE_PATH = basePath;
+  }
+  
+  // Function to load image with fallback
+  function loadBackgroundImage(img, bgPath) {
+    if (!bgPath) return;
+    var fullPath = basePath + bgPath;
+    
+    // Set background immediately (inline style already set in HTML as fallback)
+    // This ensures images show even if JS is slow
+    if (!img.style.backgroundImage || img.style.backgroundImage === 'none') {
+      img.style.backgroundImage = 'url(' + fullPath + ')';
+    }
+    img.classList.add('loaded');
+    img.style.opacity = '1';
+    
+    // Preload to ensure image is cached
+    const imageLoader = new Image();
+    imageLoader.onload = function() {
+      // Ensure background is set (Safari sometimes needs this)
+      img.style.backgroundImage = 'url(' + fullPath + ')';
+      img.classList.add('loaded');
+      img.style.opacity = '1';
+    };
+    imageLoader.onerror = function() {
+      // Keep the background even if preload fails
+      img.style.backgroundImage = 'url(' + fullPath + ')';
+      img.classList.add('loaded');
+    };
+    imageLoader.src = fullPath;
+  }
+  
+  // Load critical images immediately when script runs (before DOM ready)
+  if (document.readyState === 'loading') {
+    // DOM not ready yet, but we can still set up image loading
+    document.addEventListener('DOMContentLoaded', function() {
+      const criticalImages = document.querySelectorAll('[data-bg][loading="eager"]');
+      criticalImages.forEach(function(img) {
+        var bgPath = img.getAttribute('data-bg');
+        loadBackgroundImage(img, bgPath);
+      });
+    });
+  } else {
+    // DOM already ready, load immediately
+    const criticalImages = document.querySelectorAll('[data-bg][loading="eager"]');
+    criticalImages.forEach(function(img) {
+      var bgPath = img.getAttribute('data-bg');
+      loadBackgroundImage(img, bgPath);
+    });
+  }
+})();
+
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   // Set base path for GitHub Pages
@@ -436,11 +495,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const bgImages = document.querySelectorAll('[data-bg]');
   
   // Load critical images immediately (weeks 1-4) with preloading
+  // Note: These may already be loaded by the immediate script above
   const criticalImages = document.querySelectorAll('[data-bg][loading="eager"]');
   criticalImages.forEach(function(img) {
     var bgPath = img.getAttribute('data-bg');
     if (bgPath) {
       var fullPath = basePath + bgPath;
+      // Ensure background is set (Safari sometimes needs this)
+      if (!img.style.backgroundImage || img.style.backgroundImage === 'none') {
+        img.style.backgroundImage = 'url(' + fullPath + ')';
+      }
+      img.classList.add('loaded');
+      img.style.opacity = '1';
+      
       // Preload the image to ensure it's available
       const imageLoader = new Image();
       imageLoader.onload = function() {
@@ -456,10 +523,6 @@ document.addEventListener('DOMContentLoaded', () => {
         img.classList.add('loaded');
       };
       imageLoader.src = fullPath;
-      // Set background immediately even if not fully loaded
-      img.style.backgroundImage = 'url(' + fullPath + ')';
-      img.classList.add('loaded');
-      img.style.opacity = '1';
     }
   });
   
