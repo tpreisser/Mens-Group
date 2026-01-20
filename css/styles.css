@@ -27,13 +27,18 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 400;
   line-height: 1.6;
+  background: #000000; /* Fallback for older browsers that don't support CSS variables */
   background: var(--primary-dark);
+  color: #ffffff; /* Fallback */
   color: var(--text-primary);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   letter-spacing: -0.011em;
+  /* Ensure text is always visible on older devices */
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 
 h1, h2, h3 {
@@ -236,16 +241,29 @@ a {
 
 .week-card-image {
   width: 100%;
+  /* Fallback for older browsers that don't support aspect-ratio */
+  height: 0;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
   aspect-ratio: 16 / 9;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
   display: block;
+  -webkit-transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-in-out;
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-in-out;
   z-index: 0;
+  -webkit-filter: brightness(0.95);
   filter: brightness(0.95);
   /* Remove dark background - let the image show through immediately */
+}
+
+/* Support aspect-ratio for browsers that support it */
+@supports (aspect-ratio: 16 / 9) {
+  .week-card-image {
+    height: auto;
+    padding-bottom: 0;
+  }
 }
 
 /* Lazy loaded images start hidden and fade in */
@@ -1487,6 +1505,56 @@ a {
   }
 }
 
+/* Older phone compatibility - iOS 9 and Android 4.4+ */
+@media screen and (max-width: 480px) {
+  /* Ensure flexbox fallbacks for older browsers */
+  .weeks-grid {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+  
+  /* Ensure all text is visible on older devices */
+  .week-number, .week-date {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+  }
+  
+  /* Ensure containers don't cause overflow on older phones */
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Very old phone compatibility - ensure basic functionality */
+@media screen and (max-width: 320px) {
+  .week-number {
+    font-size: 0.75rem !important;
+    white-space: nowrap;
+    overflow: visible;
+  }
+  
+  .week-date {
+    font-size: 0.75rem !important;
+    display: inline !important;
+  }
+  
+  /* Ensure text doesn't overflow on tiny screens */
+  body {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
 /* 4K and higher resolution displays */
 @media screen and (min-width: 2560px) {
   .week-detail-header .week-number {
@@ -1515,10 +1583,17 @@ a {
 
 /* Ensure week image never gets cropped - Universal rule for all devices */
 .week-image {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  /* Fallbacks for older browsers that don't support object-fit */
   object-fit: contain !important;
   object-position: center !important;
-  width: 100% !important;
-  height: auto !important;
+  -o-object-fit: contain !important;
+  -o-object-position: center !important;
+  /* Ensure image displays even on very old browsers */
+  display: block !important;
+  margin: 0 auto !important;
 }
 
 /* Universal week number centering - applies to all weeks on all devices */
