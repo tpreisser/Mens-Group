@@ -582,55 +582,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Service Worker Registration - Force cache clear and fresh content
+// Service Worker Registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    // Unregister ALL existing service workers first to completely clear cache
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      return Promise.all(
-        registrations.map(function(registration) {
-          console.log('Unregistering old service worker:', registration.scope);
-          return registration.unregister();
-        })
-      );
-    }).then(() => {
-      // Clear all caches
-      if ('caches' in window) {
-        caches.keys().then(function(cacheNames) {
-          return Promise.all(
-            cacheNames.map(function(cacheName) {
-              console.log('Deleting cache:', cacheName);
-              return caches.delete(cacheName);
-            })
-          );
-        });
-      }
-    }).then(() => {
-      // Register new service worker with cache-busting version
-      var swPath = (window.BASE_PATH || '/') + 'sw.js?v=' + Date.now() + '&cb=' + Math.random();
-      navigator.serviceWorker.register(swPath)
-        .then(registration => {
-          console.log('ServiceWorker registered:', registration);
-          // Force immediate update and skip waiting
-          registration.update();
-          // If there's a waiting worker, force it to activate
-          if (registration.waiting) {
-            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-          }
-          // Listen for updates and force reload
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                // New service worker available, force reload
-                window.location.reload();
-              }
-            });
-          });
-        })
-        .catch(error => {
-          console.log('ServiceWorker registration failed:', error);
-        });
-    });
+    // Register service worker with correct path
+    var swPath = (window.BASE_PATH || '/') + 'sw.js';
+    navigator.serviceWorker.register(swPath)
+      .then(registration => {
+        console.log('ServiceWorker registered:', registration);
+      })
+      .catch(error => {
+        console.log('ServiceWorker registration failed:', error);
+      });
   });
 }

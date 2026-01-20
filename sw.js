@@ -11,8 +11,7 @@ const getBasePath = () => {
 };
 
 const BASE_PATH = getBasePath();
-// Force cache clear - increment version number to invalidate all old caches
-const CACHE_NAME = 'same-battles-v5-cache-bust-' + new Date().getTime();
+const CACHE_NAME = 'same-battles-v6';
 const urlsToCache = [
   BASE_PATH,
   BASE_PATH + 'index.html',
@@ -34,102 +33,103 @@ const urlsToCache = [
   BASE_PATH + 'weeks/week-12.html'
 ];
 
-// Install event - cache resources but skip waiting to activate immediately
+// Install event - cache resources
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    // Delete all old caches first
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName.startsWith('same-battles-') && cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => {
-      // Then cache new resources
-      return caches.open(CACHE_NAME)
-        .then((cache) => {
-          // Try to cache all URLs, but don't fail if some fail
-          return Promise.allSettled(
-            urlsToCache.map(url => 
-              cache.add(url).catch(err => {
-                console.log('Failed to cache:', url, err);
-                return null;
-              })
-            )
-          );
-        })
-        .catch((error) => {
-          console.log('Cache install failed:', error);
-        });
-    })
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        // Try to cache all URLs, but don't fail if some fail
+        return Promise.allSettled(
+          urlsToCache.map(url => 
+            cache.add(url).catch(err => {
+              console.log('Failed to cache:', url, err);
+              return null;
+            })
+          )
+        );
+      })
+      .catch((error) => {
+        console.log('Cache install failed:', error);
+      })
   );
-  // Skip waiting to activate immediately and clear old cache
   self.skipWaiting();
 });
 
-// Listen for skip waiting message
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
-
-// Activate event - clean up ALL old caches to force fresh content
+// Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
-      // Delete ALL old caches - force complete refresh
       return Promise.all(
         cacheNames.map((cacheName) => {
-          // Delete all same-battles caches except the current one
+          // Delete all old same-battles caches
           if (cacheName.startsWith('same-battles-') && cacheName !== CACHE_NAME) {
-            console.log('Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
-    }).then(() => {
-      // Force all clients to reload with new cache
-      return self.clients.claim();
     })
   );
+  return self.clients.claim();
 });
 
-// Fetch event - ALWAYS network first to get fresh content, bypass cache
+// Fetch event - network first for HTML, cache first for assets
 self.addEventListener('fetch', (event) => {
-  // Network first strategy for ALL requests to always get fresh content
-  event.respondWith(
-    fetch(event.request, { 
-      cache: 'no-store',
-      headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-      }
-    })
-      .then((response) => {
-        // Only cache for offline use, but always fetch fresh from network
-        if (response.status === 200 && !event.request.url.includes('/assets/audio/')) {
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return response;
-      })
-      .catch(() => {
-        // Only use cache if network completely fails (offline mode)
-        return caches.match(event.request).then((cached) => {
-          if (cached) {
-            return cached;
+  // Network first strategy for HTML pages to always get fresh content
+  if (event.request.destination === 'document' || event.request.url.includes('.html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          // Cache successful HTML responses for offline
+          if (response.status === 200) {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
           }
-          // If cache also fails and it's a document request, return index
+          return response;
+        })
+        .catch(() => {
+          // Fallback to cache if network fails
+          return caches.match(event.request).then((cached) => {
+            if (cached) {
+              return cached;
+            }
+            // If cache also fails and it's a document request, return index
+            if (event.request.destination === 'document') {
+              return caches.match(BASE_PATH + 'index.html');
+            }
+          });
+        })
+    );
+  } else {
+    // Cache first for assets (images, CSS, JS)
+    event.respondWith(
+      caches.match(event.request)
+        .then((response) => {
+          // Return cached version or fetch from network
+          return response || fetch(event.request).then((response) => {
+            // Don't cache audio files (they're large)
+            if (event.request.url.includes('/assets/audio/')) {
+              return response;
+            }
+            
+            // Cache successful responses
+            if (response.status === 200) {
+              const responseToCache = response.clone();
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+            }
+            
+            return response;
+          });
+        })
+        .catch(() => {
+          // If both cache and network fail, return offline page for documents
           if (event.request.destination === 'document') {
             return caches.match(BASE_PATH + 'index.html');
           }
-        });
-      })
-  );
+        })
+    );
+  }
 });
