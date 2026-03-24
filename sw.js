@@ -11,7 +11,7 @@ const getBasePath = () => {
 };
 
 const BASE_PATH = getBasePath();
-const CACHE_NAME = 'same-battles-v10';
+const CACHE_NAME = 'same-battles-v11';
 const urlsToCache = [
   BASE_PATH,
   BASE_PATH + 'index.html',
