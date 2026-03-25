@@ -101,12 +101,14 @@ a {
   max-width: 1600px;
   margin: 0 auto;
   padding: 0 4rem;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 /* Weeks Grid - Sophisticated Layout */
 .weeks-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
   padding: 0 0 10rem;
   position: relative;
@@ -1718,23 +1720,9 @@ a {
   }
 }
 
-/* Ensure container doesn't cause overflow on any device */
-.container {
-  max-width: 100% !important;
-  overflow-x: hidden !important;
-}
-
 /* Prevent any horizontal scrolling */
 body {
-  overflow-x: hidden !important;
-  width: 100% !important;
-}
-
-/* Ensure main content area is always properly sized */
-main.container {
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
+  overflow-x: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
